@@ -20,10 +20,17 @@
                     <h1>Mr Kendall's SQL Academy</h1>
                 
                 </div>
-                <div class="theme-toggle">
-                    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode">
-                        <span class="theme-icon">☀️</span>
-                    </button>
+                <div class="header-controls">
+                    <div class="theme-toggle">
+                        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode">
+                            <span class="theme-icon">☀️</span>
+                        </button>
+                    </div>
+                    <div class="header-icon">
+                        <a href="https://www.korovatron.co.uk/" target="_blank" rel="noopener noreferrer" aria-label="Visit Korovatron website">
+                            <img src="korovatronIconTrans.png" alt="Korovatron Icon" class="korovatron-icon">
+                        </a>
+                    </div>
                 </div>
             </div>
         </header>
@@ -99,10 +106,10 @@
                     <h3>Exercises</h3>
                     <div class="exercise-sections">
                         <div class="section-group">
-                            <h4 class="section-toggle" data-section="section1">
+                            <h4 class="section-toggle collapsed" data-section="section1">
                                 <span class="toggle-icon">▼</span> Module 1: SELECT (6 exercises)
                             </h4>
-                            <div class="examples section-content" id="section1">
+                            <div class="examples section-content collapsed" id="section1">
                                 <button class="exercise-btn" data-exercise="1" data-title="Exercise 1: Basic SELECT" data-description="Select all columns from the Heroes table to see all superheroes in the database.">1. View All Heroes</button>
                                 <button class="exercise-btn" data-exercise="2" data-title="Exercise 2: Filtering by Text" data-description="Select all heroes where the Universe is exactly 'Marvel'. Show all columns.">2. Marvel Heroes Only</button>
                                 <button class="exercise-btn" data-exercise="3" data-title="Exercise 3: Filtering by Number Range" data-description="Select the HeroName and PowerLevel for all heroes where PowerLevel is greater than 90.">3. Most Powerful Heroes</button>
