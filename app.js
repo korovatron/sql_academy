@@ -83,6 +83,9 @@ class SQLPracticeApp {
         // Exercise buttons - new functionality
         document.querySelectorAll('.exercise-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
+                // Prevent default button behavior that might interfere with scrolling
+                e.preventDefault();
+                
                 // Remove selected class from all exercise buttons
                 document.querySelectorAll('.exercise-btn').forEach(b => b.classList.remove('selected'));
                 
@@ -101,6 +104,15 @@ class SQLPracticeApp {
                 // Clear the SQL input for student to write their own query
                 document.getElementById('sqlInput').value = '';
                 this.clearResults();
+                
+                // Smooth scroll to top to show the exercise question
+                // Use setTimeout to ensure scroll happens after any browser focus changes
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 10);
             });
         });
 
