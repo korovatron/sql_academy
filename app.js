@@ -105,13 +105,26 @@ class SQLPracticeApp {
                 document.getElementById('sqlInput').value = '';
                 this.clearResults();
                 
-                // Smooth scroll to top to show the exercise question
+                // Responsive scroll behavior
                 // Use setTimeout to ensure scroll happens after any browser focus changes
                 setTimeout(() => {
-                    window.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+                    // Check if we're on mobile (768px is the breakpoint used in CSS)
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    if (isMobile) {
+                        // On mobile, scroll to the exercise description
+                        const exerciseDisplay = document.getElementById('exerciseDisplay');
+                        exerciseDisplay.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    } else {
+                        // On desktop, scroll to top (exercise description is already visible)
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
                 }, 10);
             });
         });
