@@ -42,46 +42,48 @@ A fully client-side SQL practice environment that runs entirely in the browser u
 4. Select `main` branch and `/ (root)` folder
 5. Your SQL practice environment will be available at `https://yourusername.github.io/repository-name`
 
-## Sample Database Schema
+## 🗃️ Database Schema Overview
 
-### Heroes Table
-- HeroID (Primary Key)
-- HeroName
-- RealName
-- City
-- Universe (Marvel/DC/etc)
-- PowerLevel (1-100)
-- **FirstAppearance (Date)** - Comic book debut date
+### Visual Entity Relationship Diagram
 
-### Powers Table
-- PowerID (Primary Key)
-- PowerName
-- PowerType (Physical/Mental/Energy/Reality)
-- EnergyRequired
-- DangerLevel (1-10)
-- **CreationDate (Date)** - When power first documented
+```
+    HEROES (1) ────────────────────── (N) MISSIONS (N) ────────────────────── (1) VILLAINS
+    ┌─────────────┐                        ┌─────────────┐                        ┌─────────────┐
+    │ • HeroID    │◄──────────────────────►│ • MissionID │◄──────────────────────►│ • VillainID │
+    │ • HeroName  │                        │ • HeroID    │                        │ • VillainName│
+    │ • Universe  │                        │ • VillainID │                        │ • ThreatLevel│
+    │ • PowerLevel│                        │ • Status    │                        │ • LastSeen  │
+    └─────────────┘                        └─────────────┘                        └─────────────┘
+           │                                                                              
+           │ M:N                                                                          
+           ▼                                                                              
+    ┌─────────────┐                        ┌─────────────┐                              
+    │ HEROPOWERS  │◄──────────────────────►│   POWERS    │                              
+    │ • HeroID    │                        │ • PowerID   │                              
+    │ • PowerID   │                        │ • PowerName │                              
+    │ • Proficiency│                       │ • PowerType │                              
+    └─────────────┘                        │ • DangerLevel│                              
+                                           └─────────────┘                              
+```
 
-### Missions Table
-- MissionID (Primary Key)
-- HeroID (Foreign Key)
-- VillainID (Foreign Key)
-- **MissionDate (Date)** - When mission occurred
-- Difficulty (Easy/Medium/Hard/Extreme)
-- Status (Completed/In Progress/Failed)
+### 📋 Table Structures
 
-### HeroPowers Table (Junction Table)
-- HeroID (Foreign Key)
-- PowerID (Foreign Key)
-- ProficiencyLevel (1-100)
-- YearsTraining
+**🦸‍♂️ HEROES** - Main character data
+- `HeroID` (Primary Key), `HeroName`, `RealName`, `City`, `Universe`, `PowerLevel`, `FirstAppearance`
 
-### Villains Table
-- VillainID (Primary Key)
-- VillainName
-- RealName
-- City
-- ThreatLevel (1-10)
-- **LastSeen (Date)** - Last known villain activity
+**⚡ POWERS** - Superhero abilities
+- `PowerID` (Primary Key), `PowerName`, `PowerType`, `EnergyRequired`, `DangerLevel`, `CreationDate`
+
+**🦹‍♂️ VILLAINS** - Antagonist data  
+- `VillainID` (Primary Key), `VillainName`, `RealName`, `City`, `ThreatLevel`, `LastSeen`
+
+**🎯 MISSIONS** - Hero vs Villain encounters
+- `MissionID` (Primary Key), `HeroID` (FK), `VillainID` (FK), `MissionDate`, `Difficulty`, `Status`
+
+**🔗 HEROPOWERS** - Many-to-Many junction table
+- `HeroID` (FK), `PowerID` (FK), `ProficiencyLevel`, `YearsTraining`
+
+> 📖 **For detailed schema with visual diagrams, see [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md)**
 
 ## Example Queries
 
