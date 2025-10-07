@@ -544,14 +544,84 @@ DELETE FROM Teams WHERE TeamName = 'Fantastic Four';
 
 ---
 
-### **Exercise 39: Clean Up Tables**
-**Task:** Clean up the database by removing the entire Teams table using DROP TABLE statement.
+### **Exercise 39: Create Team Junction Table**
+**Task:** Create a new table called 'TeamMembers' to link heroes to teams. Columns: HeroID (INTEGER), TeamID (INTEGER), JoinDate (TEXT), Role (TEXT). This creates a many-to-many relationship.
 
 ```sql
+CREATE TABLE TeamMembers (
+    HeroID INTEGER,
+    TeamID INTEGER,
+    JoinDate TEXT,
+    Role TEXT
+);
+```
+
+**Learning Goal:** Creating junction tables for many-to-many relationships
+
+---
+
+### **Exercise 40: Populate Avengers Team**
+**Task:** Add Spider-Man (HeroID 1), Iron Man (HeroID 4), and Captain America (HeroID 8) to the Avengers team (TeamID 1). Set join dates to '2024-01-01' and roles to 'Member'.
+
+```sql
+INSERT INTO TeamMembers (HeroID, TeamID, JoinDate, Role) VALUES 
+(1, 1, '2024-01-01', 'Member'),
+(4, 1, '2024-01-01', 'Member'),
+(8, 1, '2024-01-01', 'Member');
+```
+
+**Learning Goal:** Populating junction tables with relationship data
+
+---
+
+### **Exercise 41: Populate Justice League**
+**Task:** Add Superman (HeroID 7), Batman (HeroID 2), and Wonder Woman (HeroID 3) to Justice League (TeamID 2). Set join dates to '2024-02-01' and roles to 'Member'.
+
+```sql
+INSERT INTO TeamMembers (HeroID, TeamID, JoinDate, Role) VALUES 
+(7, 2, '2024-02-01', 'Member'),
+(2, 2, '2024-02-01', 'Member'),
+(3, 2, '2024-02-01', 'Member');
+```
+
+**Learning Goal:** Additional practice with junction table inserts
+
+---
+
+### **Exercise 42: View Team Rosters**
+**Task:** Show team names with their member hero names. SELECT TeamName, HeroName FROM Teams, Heroes, TeamMembers WHERE Teams.TeamID = TeamMembers.TeamID AND Heroes.HeroID = TeamMembers.HeroID.
+
+```sql
+SELECT TeamName, HeroName 
+FROM Teams, Heroes, TeamMembers 
+WHERE Teams.TeamID = TeamMembers.TeamID 
+AND Heroes.HeroID = TeamMembers.HeroID;
+```
+
+**Learning Goal:** Three-table joins using junction tables
+
+---
+
+### **Exercise 43: Remove Team Member**
+**Task:** Spider-Man is leaving the Avengers! Delete the record from TeamMembers where HeroID = 1 AND TeamID = 1.
+
+```sql
+DELETE FROM TeamMembers WHERE HeroID = 1 AND TeamID = 1;
+```
+
+**Learning Goal:** Deleting specific relationships from junction tables
+
+---
+
+### **Exercise 44: Final Cleanup**
+**Task:** Clean up the database by removing both the TeamMembers and Teams tables using DROP TABLE statements.
+
+```sql
+DROP TABLE TeamMembers;
 DROP TABLE Teams;
 ```
 
-**Learning Goal:** DROP TABLE to remove entire table structures
+**Learning Goal:** Proper cleanup order when dropping related tables
 
 ---
 

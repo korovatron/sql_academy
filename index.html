@@ -185,7 +185,7 @@
 
                         <div class="section-group">
                             <h4 class="section-toggle collapsed" data-section="section7">
-                                <span class="toggle-icon">▼</span> Module 7: CREATE TABLE (9 exercises)
+                                <span class="toggle-icon">▼</span> Module 7: CREATE TABLE (15 exercises)
                             </h4>
                             <div class="examples section-content collapsed" id="section7">
                                 <button class="exercise-btn" data-exercise="31" data-title="Exercise 31: Create Teams Table" data-description="Create a new table called 'Teams' with columns: TeamID (INTEGER PRIMARY KEY), TeamName (TEXT NOT NULL), LeaderID (INTEGER), and City (TEXT).">31. Define Teams Table</button>
@@ -196,7 +196,12 @@
                                 <button class="exercise-btn" data-exercise="36" data-title="Exercise 36: Add Column to Teams" data-description="Add a new column called 'Founded' with data type TEXT to the Teams table to track when each team was established.">36. Add Founded Date</button>
                                 <button class="exercise-btn" data-exercise="37" data-title="Exercise 37: Update Founded Dates" data-description="Update the Teams table to set founding dates: Avengers = '1963-09-01', Justice League = '1960-03-01', X-Men = '1963-09-01', Fantastic Four = '1961-11-01', Teen Titans = '1964-07-01'.">37. Set Team History</button>
                                 <button class="exercise-btn" data-exercise="38" data-title="Exercise 38: Remove Disbanded Team" data-description="Unfortunately, the Fantastic Four has disbanded. Delete their record from the Teams table.">38. Remove Team</button>
-                                <button class="exercise-btn" data-exercise="39" data-title="Exercise 39: Drop Teams Table" data-description="Clean up the database by removing the entire Teams table using DROP TABLE statement.">39. Clean Up Tables</button>
+                                <button class="exercise-btn" data-exercise="39" data-title="Exercise 39: Create Team Members Junction Table" data-description="Create a new table called 'TeamMembers' to link heroes to teams. Columns: HeroID (INTEGER), TeamID (INTEGER), JoinDate (TEXT), Role (TEXT). This creates a many-to-many relationship.">39. Create Team Junction Table</button>
+                                <button class="exercise-btn" data-exercise="40" data-title="Exercise 40: Add Heroes to Avengers" data-description="Add Spider-Man (HeroID 1), Iron Man (HeroID 4), and Captain America (HeroID 8) to the Avengers team (TeamID 1). Set join dates to '2024-01-01' and roles to 'Member'.">40. Populate Avengers Team</button>
+                                <button class="exercise-btn" data-exercise="41" data-title="Exercise 41: Add Heroes to Justice League" data-description="Add Superman (HeroID 7), Batman (HeroID 2), and Wonder Woman (HeroID 3) to Justice League (TeamID 2). Set join dates to '2024-02-01' and roles to 'Member'.">41. Populate Justice League</button>
+                                <button class="exercise-btn" data-exercise="42" data-title="Exercise 42: Query Team Rosters" data-description="Show team names with their member hero names. Use a three-table join connecting Teams, Heroes, and TeamMembers to display which heroes belong to which teams.">42. View Team Rosters</button>
+                                <button class="exercise-btn" data-exercise="43" data-title="Exercise 43: Remove Team Member" data-description="Spider-Man is leaving the Avengers! Delete the record from TeamMembers where HeroID = 1 AND TeamID = 1.">43. Remove Team Member</button>
+                                <button class="exercise-btn" data-exercise="44" data-title="Exercise 44: Clean Up All Tables" data-description="Clean up the database by removing both the TeamMembers and Teams tables using DROP TABLE statements.">44. Final Cleanup</button>
                             </div>
                         </div>
                     </div>
