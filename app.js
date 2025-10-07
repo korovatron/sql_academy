@@ -355,6 +355,9 @@ class SQLPracticeApp {
         const schemaContainer = document.getElementById('schemaContainer');
         const schemaToggle = document.getElementById('schemaToggle');
         
+        // Mark that user has manually toggled the schema
+        schemaContainer.setAttribute('data-user-toggled', 'true');
+        
         if (schemaContainer.classList.contains('collapsed')) {
             // Expand schema
             schemaContainer.classList.remove('collapsed');
@@ -388,8 +391,14 @@ class SQLPracticeApp {
             schemaContainer.classList.remove('collapsed');
             schemaToggle.classList.remove('collapsed');
             schemaToggle.setAttribute('aria-label', 'Hide schema');
+        } else {
+            // Mobile mode - collapse schema by default if not already set
+            if (!schemaContainer.hasAttribute('data-user-toggled')) {
+                schemaContainer.classList.add('collapsed');
+                schemaToggle.classList.add('collapsed');
+                schemaToggle.setAttribute('aria-label', 'Show schema');
+            }
         }
-        // Mobile mode - leave as is (user's preference is preserved)
     }
 }
 
