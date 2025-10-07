@@ -550,8 +550,7 @@ header {
     background: var(--gradient-primary);
     color: white;
     font-weight: 600;
-    position: sticky;
-    top: 0;
+    border-bottom: 2px solid var(--border-light);
 }
 
 .result-table tr:hover {

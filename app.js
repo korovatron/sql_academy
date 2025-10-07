@@ -354,19 +354,16 @@ class SQLPracticeApp {
     toggleSchema() {
         const schemaContainer = document.getElementById('schemaContainer');
         const schemaToggle = document.getElementById('schemaToggle');
-        const icon = schemaToggle.querySelector('.schema-toggle-icon');
         
         if (schemaContainer.classList.contains('collapsed')) {
             // Expand schema
             schemaContainer.classList.remove('collapsed');
             schemaToggle.classList.remove('collapsed');
-            icon.textContent = '▼';
             schemaToggle.setAttribute('aria-label', 'Hide schema');
         } else {
             // Collapse schema
             schemaContainer.classList.add('collapsed');
             schemaToggle.classList.add('collapsed');
-            icon.textContent = '▶';
             schemaToggle.setAttribute('aria-label', 'Show schema');
         }
     }
@@ -384,14 +381,12 @@ class SQLPracticeApp {
     checkSchemaVisibility() {
         const schemaContainer = document.getElementById('schemaContainer');
         const schemaToggle = document.getElementById('schemaToggle');
-        const icon = schemaToggle.querySelector('.schema-toggle-icon');
         
         // Check if we're in desktop mode (> 768px)
         if (window.innerWidth > 768) {
             // Desktop mode - always show schema and reset toggle
             schemaContainer.classList.remove('collapsed');
             schemaToggle.classList.remove('collapsed');
-            icon.textContent = '▼';
             schemaToggle.setAttribute('aria-label', 'Hide schema');
         }
         // Mobile mode - leave as is (user's preference is preserved)
