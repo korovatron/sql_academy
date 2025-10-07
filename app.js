@@ -138,7 +138,11 @@ class SQLPracticeApp {
     }
 
     executeQuery() {
-        const query = document.getElementById('sqlInput').value.trim();
+        let query = document.getElementById('sqlInput').value.trim();
+        // Normalize smart quotes and apostrophes to standard ones
+        query = query
+            .replace(/[“”«»„‟❝❞〝〞＂]/g, '"') // smart double quotes to normal
+            .replace(/[‘’‚‛❛❜⸂⸃⸄⸅⸉⸊⸌⸍']/g, "'"); // smart single quotes to normal
         
         if (!query) {
             this.displayMessage('Please enter a SQL query.', 'error');
