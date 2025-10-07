@@ -85,6 +85,14 @@ header {
 .header-text h1 {
     font-size: 2.5em;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.title-logo {
+    height: 2.5em;
+    width: auto;
 }
 
 .header-text p {
@@ -621,6 +629,10 @@ footer {
         line-height: 1.2;
     }
     
+    .title-logo {
+        height: 2.2em;
+    }
+    
     .header-text p {
         font-size: 1em;
     }
@@ -731,6 +743,10 @@ footer {
     
     .header-text h1 {
         font-size: 1.5em;
+    }
+    
+    .title-logo {
+        height: 1.8em;
     }
     
     .section-toggle {
