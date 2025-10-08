@@ -119,11 +119,11 @@ class SQLPracticeApp {
                 // Responsive scroll behavior
                 // Use setTimeout to ensure scroll happens after any browser focus changes
                 setTimeout(() => {
-                    // Check if we're on mobile (768px is the breakpoint used in CSS)
-                    const isMobile = window.innerWidth <= 768;
+                    // Check if we're on mobile/tablet portrait (1024px is the breakpoint for desktop layout in CSS)
+                    const isMobileOrTablet = window.innerWidth < 1024;
                     
-                    if (isMobile) {
-                        // On mobile, scroll to the exercise description
+                    if (isMobileOrTablet) {
+                        // On mobile/tablet, scroll to the exercise description
                         const exerciseDisplay = document.getElementById('exerciseDisplay');
                         exerciseDisplay.scrollIntoView({
                             behavior: 'smooth',

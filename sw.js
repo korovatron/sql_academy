@@ -1,7 +1,7 @@
 // Service Worker for SQL Academy PWA
 // Version 1.0 - Cache-first strategy with offline support
 
-const CACHE_NAME = 'sql-academy-v1.1';
+const CACHE_NAME = 'sql-academy-v1.2';
 const urlsToCache = [
   './',
   './index.html',
