@@ -115,6 +115,15 @@ header {
     gap: 15px;
 }
 
+.hero-subtitle {
+    font-size: 1.1em;
+    opacity: 0.9;
+    margin-top: 10px;
+    margin-bottom: 0;
+    line-height: 1.4;
+    max-width: 600px;
+}
+
 .title-logo {
     height: 2.5em;
     width: auto;
@@ -240,7 +249,6 @@ header {
 
 .section-group {
     margin-bottom: 15px;
-    border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
     transition: border-color 0.3s ease;
@@ -248,7 +256,7 @@ header {
 
 .section-toggle {
     background: var(--gradient-secondary);
-    color: var(--text-secondary);
+    color: white;
     padding: 12px 15px;
     margin: 0;
     cursor: pointer;
@@ -260,13 +268,14 @@ header {
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
-    border-bottom: 1px solid var(--border-light);
 }
 
 .section-toggle:hover {
-    background: var(--gradient-secondary);
-    color: var(--text-primary);
-    filter: brightness(0.95);
+    background: var(--gradient-primary);
+    color: white;
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .toggle-icon {
@@ -354,7 +363,7 @@ header {
     box-shadow: 0 2px 4px var(--shadow);
 }
 
-.database-info h3, .example-queries h3, .sql-editor h3, .results h3, .exercise-display h3 {
+.database-info h2, .example-queries h2, .sql-editor h2, .results h2, .exercise-display h2 {
     color: #667eea;
     margin-bottom: 15px;
     font-size: 1.3em;
@@ -660,6 +669,11 @@ footer {
         line-height: 1.2;
     }
     
+    .hero-subtitle {
+        font-size: 1em;
+        margin-top: 8px;
+    }
+    
     .title-logo {
         height: 2.2em;
     }
@@ -785,6 +799,11 @@ footer {
     
     .header-text h1 {
         font-size: 1.5em;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9em;
+        margin-top: 6px;
     }
     
     .title-logo {

@@ -3,11 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL Academy</title>
+    
+    <!-- SEO Meta Tag                                                                                     <h3 class="section-toggle collapsed" data-section="section6">
+                                <span class="toggle-icon">▼</span> Module 6: DELETE (3 exercises)
+                            </h3>          <h3 class="section-toggle collapsed" data-section="section5">
+                                <span class="toggle-icon">▼</span> Module 5: UPDATE (4 exercises)
+                            </h3>          <h3 class="section-toggle collapsed" data-section="section3">
+                                <span class="toggle-icon">▼</span> Module 3: ORDER BY & LIMIT (5 exercises)
+                            </h3>3 class="section-toggle collapsed" data-section="section2">
+                                <span class="toggle-icon">▼</span> Module 2: WHERE Clause (8 exercises)
+                            </h3>->
+    <title>SQL Academy - Learn SQL for GCSE & A Level Computer Science | Interactive SQL Practice</title>
+    <meta name="description" content="Master SQL queries with our interactive SQL Academy. Perfect for GCSE and A Level Computer Science students. Practice SELECT, JOIN, INSERT, UPDATE, DELETE with 44 hands-on exercises using a superhero database.">
+    <meta name="keywords" content="SQL practice, GCSE Computer Science, A Level Computer Science, SQL tutorial, database queries, SQL exercises, learn SQL online, SQL Academy, interactive SQL, SQL for students">
+    <meta name="author" content="Mr Kendall">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://korovatron.github.io/sql_academy/">
+    <meta property="og:title" content="SQL Academy - Interactive SQL Practice for Computer Science Students">
+    <meta property="og:description" content="Learn SQL with 44 interactive exercises designed for GCSE and A Level Computer Science students. Practice database queries with our superhero-themed SQL Academy.">
+    <meta property="og:image" content="https://korovatron.github.io/sql_academy/sqlman_touch.png">
+    <meta property="og:site_name" content="Mr Kendall's SQL Academy">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://korovatron.github.io/sql_academy/">
+    <meta property="twitter:title" content="SQL Academy - Interactive SQL Practice for Computer Science Students">
+    <meta property="twitter:description" content="Learn SQL with 44 interactive exercises designed for GCSE and A Level Computer Science students. Practice database queries with our superhero-themed SQL Academy.">
+    <meta property="twitter:image" content="https://korovatron.github.io/sql_academy/sqlman_touch.png">
+    
+    <!-- Educational Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        "name": "Mr Kendall's SQL Academy",
+        "description": "Interactive SQL practice platform for GCSE and A Level Computer Science students with 44 hands-on exercises",
+        "url": "https://korovatron.github.io/sql_academy/",
+        "author": {
+            "@type": "Person",
+            "name": "Mr Kendall"
+        },
+        "educationalLevel": ["GCSE", "A Level"],
+        "educationalUse": "practice",
+        "learningResourceType": "interactive",
+        "about": {
+            "@type": "Thing",
+            "name": "SQL Database Queries"
+        },
+        "teaches": [
+            "SQL SELECT statements",
+            "Database JOINs",
+            "INSERT, UPDATE, DELETE operations",
+            "Table creation and modification",
+            "Database schema design"
+        ],
+        "targetAudience": {
+            "@type": "EducationalAudience",
+            "educationalRole": "student",
+            "audienceType": "Computer Science students"
+        },
+        "isAccessibleForFree": true,
+        "inLanguage": "en",
+        "creativeWorkStatus": "Published"
+    }
+    </script>
+    
+    <!-- FAQ Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What SQL topics are covered for GCSE Computer Science?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Our platform covers all SQL topics required for GCSE Computer Science including SELECT statements, WHERE clauses, ORDER BY, basic JOINs, and data modification with INSERT, UPDATE, and DELETE commands."
+                }
+            },
+            {
+                "@type": "Question", 
+                "name": "Is this suitable for A Level Computer Science SQL requirements?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! We cover advanced SQL concepts required for A Level including complex JOINs, subqueries, GROUP BY with aggregation functions, and database design principles with CREATE TABLE statements."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I practice SQL without installing software?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Absolutely! Our browser-based SQL editor uses SQL.js technology, allowing you to practice SQL queries directly in your web browser without any downloads or installations."
+                }
+            }
+        ]
+    }
+    </script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="sqlman_touch.png">
     <link rel="apple-touch-icon" href="sqlman_touch.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://korovatron.github.io/sql_academy/">
     
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
@@ -18,16 +124,15 @@
             <div class="header-content">
                 <div class="header-text">
                     <h1><img src="sqlman_trans.png" alt="SQL Man" class="title-logo">Mr Kendall's SQL Academy</h1>
-                
                 </div>
             </div>
         </header>
 
-        <div class="main-content">
-            <div class="left-panel">
-                <div class="database-info">
+        <main class="main-content" role="main">
+            <aside class="left-panel" role="complementary" aria-label="Database schema and exercises">
+                <section class="database-info">
                     <div class="schema-header">
-                        <h3>Hero Database Schema</h3>
+                        <h2>Hero Database Schema</h2>
                         <button class="schema-toggle-btn" id="schemaToggle" aria-label="Toggle schema visibility">
                             <span class="schema-toggle-icon">▼</span>
                         </button>
@@ -88,15 +193,15 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="example-queries">
-                    <h3>Exercises</h3>
+                <section class="example-queries" role="region" aria-label="SQL exercises">
+                    <h2>Exercises</h2>
                     <div class="exercise-sections">
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section1">
+                            <h3 class="section-toggle collapsed" data-section="section1">
                                 <span class="toggle-icon">▼</span> Module 1: SELECT (6 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section1">
                                 <button class="exercise-btn" data-exercise="1" data-title="Exercise 1: Basic SELECT" data-description="Select all columns from the Heroes table to see all superheroes in the database.">1. View All Heroes</button>
                                 <button class="exercise-btn" data-exercise="2" data-title="Exercise 2: Filtering by Text" data-description="Select all heroes where the Universe is exactly 'Marvel'. Show all columns.">2. Marvel Heroes Only</button>
@@ -108,9 +213,9 @@
                         </div>
                         
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section2">
+                            <h3 class="section-toggle collapsed" data-section="section2">
                                 <span class="toggle-icon">▼</span> Module 2: JOIN tables (4 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section2">
                                 <button class="exercise-btn" data-exercise="7" data-title="Exercise 7: Basic Two-Table Join" data-description="Show each hero's name along with their mission dates. Select HeroName from Heroes and MissionDate from Missions. Use WHERE to join Heroes.HeroID = Missions.HeroID.">7. Heroes and Mission Dates</button>
                                 <button class="exercise-btn" data-exercise="8" data-title="Exercise 8: Filtered Two-Table Join" data-description="Show hero names and villain names for completed missions only. Select HeroName from Heroes and VillainName from Villains, joining through Missions where Status = 'Completed'.">8. Successful Hero-Villain Battles</button>
@@ -120,9 +225,9 @@
                         </div>
 
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section3">
+                            <h3 class="section-toggle collapsed" data-section="section3">
                                 <span class="toggle-icon">▼</span> Module 3: JOIN multiple tables (5 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section3">
                                 <button class="exercise-btn" data-exercise="11" data-title="Exercise 11: Complete Mission Details" data-description="Show HeroName, VillainName, and MissionDate for all completed missions. You'll need to join Heroes, Villains, and Missions tables.">11. Full Mission Reports</button>
                                 <button class="exercise-btn" data-exercise="12" data-title="Exercise 12: Power Analysis" data-description="Show HeroName, PowerName, and ProficiencyLevel for heroes with proficiency above 90. Join Heroes, Powers, and HeroPowers tables.">12. Master-Level Powers</button>
@@ -133,9 +238,9 @@
                         </div>
 
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section4">
+                            <h3 class="section-toggle collapsed" data-section="section4">
                                 <span class="toggle-icon">▼</span> Module 4: INSERT INTO (5 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section4">
                                 <button class="exercise-btn" data-exercise="16" data-title="Exercise 16: Add New Hero" data-description="Insert a new hero named 'Deadpool' with real name 'Wade Wilson', city 'New York', universe 'Marvel', power level 75, and first appearance '1991-02-01'.">16. Create New Hero</button>
                                 <button class="exercise-btn" data-exercise="17" data-title="Exercise 17: Add New Power" data-description="Insert a new power called 'Regeneration' with power type 'Physical', energy required 20, danger level 3, and creation date '1991-02-01'.">17. Create New Power</button>
@@ -146,9 +251,9 @@
                         </div>
 
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section5">
+                            <h3 class="section-toggle collapsed" data-section="section5">
                                 <span class="toggle-icon">▼</span> Module 5: UPDATE (5 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section5">
                                 <button class="exercise-btn" data-exercise="21" data-title="Exercise 21: Power Level Boost" data-description="Update Spider-Man's power level to 90. Use UPDATE statement with WHERE clause to target the specific hero by name.">21. Boost Hero Power</button>
                                 <button class="exercise-btn" data-exercise="22" data-title="Exercise 22: Mission Status Update" data-description="Update the mission with ID 1004 to change its status from 'In Progress' to 'Completed'.">22. Complete Mission</button>
@@ -159,9 +264,9 @@
                         </div>
 
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section6">
+                            <h3 class="section-toggle collapsed" data-section="section6">
                                 <span class="toggle-icon">▼</span> Module 6: DELETE (5 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section6">
                                 <button class="exercise-btn" data-exercise="26" data-title="Exercise 26: Remove Failed Mission" data-description="Delete the mission with status 'Failed' from the Missions table. Use WHERE clause to target only failed missions.">26. Clean Up Failed Mission</button>
                                 <button class="exercise-btn" data-exercise="27" data-title="Exercise 27: Remove Low-Threat Villain" data-description="Delete the villain 'Taskmaster' from the Villains table. Target by villain name.">27. Remove Minor Villain</button>
@@ -172,9 +277,9 @@
                         </div>
 
                         <div class="section-group">
-                            <h4 class="section-toggle collapsed" data-section="section7">
+                            <h3 class="section-toggle collapsed" data-section="section7">
                                 <span class="toggle-icon">▼</span> Module 7: CREATE TABLE (15 exercises)
-                            </h4>
+                            </h3>
                             <div class="examples section-content collapsed" id="section7">
                                 <button class="exercise-btn" data-exercise="31" data-title="Exercise 31: Create Teams Table" data-description="Create a new table called 'Teams' with columns: TeamID (INTEGER PRIMARY KEY), TeamName (TEXT NOT NULL), LeaderID (INTEGER), and City (TEXT).">31. Define Teams Table</button>
                                 <button class="exercise-btn" data-exercise="32" data-title="Exercise 32: Populate Teams Table" data-description="Insert three teams into the Teams table: (1, 'Avengers', 7, 'New York'), (2, 'Justice League', 7, 'Washington DC'), and (3, 'X-Men', 10, 'New York').">32. Add Team Records</button>
@@ -193,17 +298,17 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
+            </aside>
 
-            <div class="right-panel">
-                <div class="exercise-display" id="exerciseDisplay" style="display: none;">
-                    <h3 id="exerciseTitle">Exercise Title</h3>
+            <section class="right-panel" role="main" aria-label="SQL editor and results">
+                <article class="exercise-display" id="exerciseDisplay" style="display: none;">
+                    <h2 id="exerciseTitle">Exercise Title</h2>
                     <p id="exerciseDescription">Exercise description will appear here when you select an exercise from the left.</p>
-                </div>
+                </article>
                 
-                <div class="sql-editor">
-                    <h3>SQL Query Editor</h3>
+                <section class="sql-editor" role="region" aria-label="SQL query editor">
+                    <h2>SQL Query Editor</h2>
                     <textarea id="sqlInput" placeholder="Enter your SQL query here...
 Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
                     <div class="editor-controls">
@@ -211,18 +316,18 @@ Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
                         <button id="clearBtn">Clear</button>
                         <button id="resetDbBtn">Reset Database</button>
                     </div>
-                </div>
+                </section>
 
-                <div class="results">
-                    <h3>Query Results</h3>
+                <section class="results" role="region" aria-label="Query results and output">
+                    <h2>Query Results</h2>
                     <div id="loading" class="loading" style="display: none;">
                         <div class="spinner"></div>
                         <span>Loading database...</span>
                     </div>
                     <div id="results"></div>
-                </div>
-            </div>
-        </div>
+                </section>
+            </section>
+        </main>
 
         <footer>
             <p>Want to see what else I've been building? Check out <a href="https://www.korovatron.co.uk/?mode=serious" rel="noopener noreferrer" class="plain-link">www.korovatron.co.uk</a></p>
@@ -236,5 +341,35 @@ Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
 
     <script src="database.js"></script>
     <script src="app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                        
+                        // Check for service worker updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New service worker available
+                                    console.log('New service worker available');
+                                    // Could show update notification here
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        } else {
+            console.log('Service Worker not supported in this browser');
+        }
+    </script>
 </body>
 </html>

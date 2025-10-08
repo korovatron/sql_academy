@@ -54,18 +54,29 @@ class SQLPracticeApp {
             });
         }
 
-        // Section toggle functionality
+        // Section toggle functionality - Accordion behavior (only one open at a time)
         document.querySelectorAll('.section-toggle').forEach(toggle => {
             toggle.addEventListener('click', function() {
                 const sectionId = this.getAttribute('data-section');
                 const content = document.getElementById(sectionId);
+                const isCurrentlyCollapsed = content.classList.contains('collapsed');
                 
-                if (content.classList.contains('collapsed')) {
-                    // Expand section
+                if (isCurrentlyCollapsed) {
+                    // First, collapse all other sections
+                    document.querySelectorAll('.section-toggle').forEach(otherToggle => {
+                        const otherSectionId = otherToggle.getAttribute('data-section');
+                        const otherContent = document.getElementById(otherSectionId);
+                        
+                        // Collapse all sections
+                        otherContent.classList.add('collapsed');
+                        otherToggle.classList.add('collapsed');
+                    });
+                    
+                    // Then expand the clicked section
                     content.classList.remove('collapsed');
                     this.classList.remove('collapsed');
                 } else {
-                    // Collapse section
+                    // If clicking on already open section, collapse it
                     content.classList.add('collapsed');
                     this.classList.add('collapsed');
                 }
