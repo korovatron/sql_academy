@@ -2,10 +2,10 @@
     "name": "Mr Kendall's SQL Academy",
     "short_name": "SQL Academy",
     "description": "Interactive SQL practice for GCSE and A Level Computer Science students",
-    "start_url": "/",
+    "start_url": "/sql_academy/",
     "display": "standalone",
-    "background_color": "#1a1a1a",
-    "theme_color": "#667eea",
+    "background_color": "#1a1a2e",
+    "theme_color": "#1a1a2e",
     "orientation": "portrait-primary",
     "icons": [
         {
@@ -17,13 +17,13 @@
     ],
     "categories": ["education", "productivity"],
     "lang": "en",
-    "scope": "/",
+    "scope": "/sql_academy/",
     "shortcuts": [
         {
             "name": "Start SQL Practice",
             "short_name": "Practice",
             "description": "Begin practicing SQL queries",
-            "url": "/",
+            "url": "/sql_academy/",
             "icons": [
                 {
                     "src": "sqlman_touch.png",
