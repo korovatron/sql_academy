@@ -308,7 +308,13 @@
                 
                 <section class="sql-editor" role="region" aria-label="SQL query editor">
                     <h2>SQL Query Editor</h2>
-                    <textarea id="sqlInput" spellcheck="false" placeholder="Enter your SQL query here...
+
+                    <textarea id="sqlInput" 
+                              spellcheck="false" 
+                              autocorrect="off" 
+                              autocapitalize="off" 
+                              autocomplete="off"
+                              placeholder="Enter your SQL query here...
 Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
                     <div class="editor-controls">
                         <button id="executeBtn">Execute Query</button>
