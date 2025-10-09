@@ -218,6 +218,14 @@ header {
 
 @media (min-width: 1024px) {
     .main-content {
+        grid-template-columns: 1.4fr 1.6fr;
+        gap: 30px;
+    }
+}
+
+/* Wider left column for very wide screens */
+@media (min-width: 1400px) {
+    .main-content {
         grid-template-columns: 1fr 2fr;
         gap: 30px;
     }
@@ -448,22 +456,98 @@ header {
 
 .table-info h4 {
     color: var(--text-secondary);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-.table-info ul {
-    list-style: none;
+/* Schema table styling */
+.schema-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
 }
 
-.table-info li {
-    padding: 3px 0;
+.schema-table th {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+    font-size: 0.85em;
+}
+
+.schema-table td {
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+}
+
+.schema-table tr:hover {
+    background: var(--bg-hover);
+}
+
+.column-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.column-type {
     color: var(--text-muted);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
 }
 
-.table-info li:before {
-    content: "• ";
-    color: #667eea;
-    font-weight: bold;
+.column-constraints {
+    line-height: 1.4;
+}
+
+/* Constraint badges */
+.constraint-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    margin: 1px 2px;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.pk-badge {
+    background: #ff6b6b;
+    color: white;
+    padding: 2px 6px;
+    line-height: 1.2;
+    vertical-align: top;
+    min-height: 16px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+}
+
+.fk-badge {
+    background: #2d8a82;
+    color: white;
+    font-size: 0.75em;
+    text-transform: none;
+    padding: 2px 6px;
+    line-height: 1.2;
+    vertical-align: top;
+    min-height: 16px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+}
+
+.not-null-badge {
+    background: #ffe66d;
+    color: #333;
+}
+
+.default-badge {
+    background: #a8e6cf;
+    color: #333;
+    font-size: 0.7em;
+    text-transform: none;
 }
 
 .examples {
@@ -774,9 +858,24 @@ footer {
         font-size: 1em;
     }
     
-    .table-info li {
-        font-size: 14px;
-        padding: 4px 0;
+    .schema-table {
+        font-size: 0.8em;
+    }
+    
+    .schema-table th,
+    .schema-table td {
+        padding: 6px 8px;
+    }
+    
+    .constraint-badge {
+        font-size: 0.65em;
+        padding: 1px 4px;
+        margin: 1px;
+    }
+    
+    .fk-badge,
+    .default-badge {
+        font-size: 0.6em;
     }
     
     /* Exercise display improvements */

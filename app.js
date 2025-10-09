@@ -196,16 +196,40 @@ class SQLPracticeApp {
             html += `
                 <div class="table-info">
                     <h4>${this.escapeHtml(table.name)}</h4>
-                    <ul>
-                        ${table.columns.map(col => {
-                            let colText = `${col.name} (${col.type})`;
-                            if (col.primaryKey) colText += ' - Primary Key';
-                            if (col.foreignKey) colText += ` - Foreign Key → ${col.foreignKey.referencedTable}.${col.foreignKey.referencedColumn}`;
-                            if (col.notNull && !col.primaryKey) colText += ' - NOT NULL';
-                            if (col.defaultValue !== null) colText += ` - Default: ${col.defaultValue}`;
-                            return `<li>${this.escapeHtml(colText)}</li>`;
-                        }).join('')}
-                    </ul>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Column</th>
+                                <th>Type</th>
+                                <th>Constraints</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${table.columns.map(col => {
+                                let constraints = [];
+                                if (col.primaryKey) {
+                                    constraints.push('<span class="constraint-badge pk-badge">PK</span>');
+                                }
+                                if (col.foreignKey) {
+                                    constraints.push(`<span class="constraint-badge fk-badge">FK → ${col.foreignKey.referencedTable}.${col.foreignKey.referencedColumn}</span>`);
+                                }
+                                if (col.notNull && !col.primaryKey) {
+                                    constraints.push('<span class="constraint-badge not-null-badge">NOT NULL</span>');
+                                }
+                                if (col.defaultValue !== null && col.defaultValue !== undefined) {
+                                    constraints.push(`<span class="constraint-badge default-badge">DEFAULT ${col.defaultValue}</span>`);
+                                }
+                                
+                                return `
+                                    <tr>
+                                        <td class="column-name">${this.escapeHtml(col.name)}</td>
+                                        <td class="column-type">${this.escapeHtml(col.type)}</td>
+                                        <td class="column-constraints">${constraints.join(' ')}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         });
