@@ -310,14 +310,69 @@ class DatabaseManager {
                     const columnsResult = this.db.exec(`PRAGMA table_info(${tableName})`);
                     const columns = [];
                     
+                    // Get CREATE statement to check for composite primary keys
+                    const createStmtResult = this.db.exec(`
+                        SELECT sql FROM sqlite_master 
+                        WHERE type='table' AND name='${tableName}'
+                    `);
+                    
+                    let compositePrimaryKeys = [];
+                    let foreignKeys = [];
+                    if (createStmtResult.length > 0 && createStmtResult[0].values.length > 0) {
+                        const createSQL = createStmtResult[0].values[0][0];
+                        
+                        // Look for PRIMARY KEY (col1, col2, ...) pattern
+                        const pkMatch = createSQL.match(/PRIMARY\s+KEY\s*\(\s*([^)]+)\s*\)/i);
+                        if (pkMatch) {
+                            compositePrimaryKeys = pkMatch[1]
+                                .split(',')
+                                .map(col => col.trim().replace(/["`]/g, ''));
+                        }
+                        
+                        // Look for FOREIGN KEY constraints
+                        const fkMatches = createSQL.matchAll(/FOREIGN\s+KEY\s*\(\s*([^)]+)\s*\)\s*REFERENCES\s+(\w+)\s*\(\s*([^)]+)\s*\)/gi);
+                        for (const fkMatch of fkMatches) {
+                            const localColumns = fkMatch[1].split(',').map(col => col.trim().replace(/["`]/g, ''));
+                            const referencedTable = fkMatch[2].trim();
+                            const referencedColumns = fkMatch[3].split(',').map(col => col.trim().replace(/["`]/g, ''));
+                            
+                            for (let i = 0; i < localColumns.length; i++) {
+                                foreignKeys.push({
+                                    column: localColumns[i],
+                                    referencedTable: referencedTable,
+                                    referencedColumn: referencedColumns[i] || referencedColumns[0]
+                                });
+                            }
+                        }
+                        
+                        // Also look for inline REFERENCES constraints
+                        const inlineFkMatches = createSQL.matchAll(/(\w+)\s+[^,\n]*?\s+REFERENCES\s+(\w+)\s*\(\s*([^)]+)\s*\)/gi);
+                        for (const fkMatch of inlineFkMatches) {
+                            const column = fkMatch[1].trim();
+                            const referencedTable = fkMatch[2].trim();
+                            const referencedColumn = fkMatch[3].trim().replace(/["`]/g, '');
+                            
+                            foreignKeys.push({
+                                column: column,
+                                referencedTable: referencedTable,
+                                referencedColumn: referencedColumn
+                            });
+                        }
+                    }
+                    
                     if (columnsResult.length > 0) {
                         for (const colRow of columnsResult[0].values) {
+                            const columnName = colRow[1];
+                            const isPrimaryKey = colRow[5] === 1 || compositePrimaryKeys.includes(columnName);
+                            const foreignKeyInfo = foreignKeys.find(fk => fk.column === columnName);
+                            
                             columns.push({
-                                name: colRow[1],
+                                name: columnName,
                                 type: colRow[2],
                                 notNull: colRow[3] === 1,
                                 defaultValue: colRow[4],
-                                primaryKey: colRow[5] === 1
+                                primaryKey: isPrimaryKey,
+                                foreignKey: foreignKeyInfo || null
                             });
                         }
                     }

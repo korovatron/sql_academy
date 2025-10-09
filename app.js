@@ -200,6 +200,7 @@ class SQLPracticeApp {
                         ${table.columns.map(col => {
                             let colText = `${col.name} (${col.type})`;
                             if (col.primaryKey) colText += ' - Primary Key';
+                            if (col.foreignKey) colText += ` - Foreign Key → ${col.foreignKey.referencedTable}.${col.foreignKey.referencedColumn}`;
                             if (col.notNull && !col.primaryKey) colText += ' - NOT NULL';
                             if (col.defaultValue !== null) colText += ` - Default: ${col.defaultValue}`;
                             return `<li>${this.escapeHtml(colText)}</li>`;
