@@ -55,10 +55,19 @@ class SQLPracticeApp {
             }
         });
         
-        // Auto-capitalize SQL keywords when user finishes typing them
+        // Handle autocomplete selections - capitalize keywords when selected
+        this.sqlEditor.on('endCompletion', (cm) => {
+            // Small delay to let autocomplete finish, then capitalize if needed
+            setTimeout(() => {
+                this.autoCapitalizeFromAutocomplete();
+            }, 50);
+        });
+        
+        // Auto-capitalize SQL keywords when user finishes typing them (but not from autocomplete)
         this.sqlEditor.on('inputRead', (cm, change) => {
             // Check if user just typed a space, punctuation, or newline (indicating end of word)
-            if (change.text[0].match(/[\s,;()\n]/)) {
+            // Skip if this is from autocomplete origin
+            if (change.text[0].match(/[\s,;()\n]/) && change.origin !== '+autocomplete' && change.origin !== 'complete') {
                 this.autoCapitalizeKeywords();
             }
         });
@@ -78,6 +87,80 @@ class SQLPracticeApp {
                     }
                 }, 100);
             });
+        }
+    }
+
+    autoCapitalizeFromAutocomplete() {
+        const cursor = this.sqlEditor.getCursor();
+        const line = this.sqlEditor.getLine(cursor.line);
+        
+        // Define SQL keywords that should be capitalized
+        const sqlKeywords = [
+            'SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'LEFT', 'RIGHT', 'FULL', 'OUTER',
+            'ON', 'AND', 'OR', 'NOT', 'IN', 'LIKE', 'BETWEEN', 'IS', 'NULL', 'AS',
+            'ORDER', 'BY', 'ASC', 'DESC', 'GROUP', 'HAVING', 'LIMIT', 'OFFSET',
+            'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE', 'CREATE', 'TABLE',
+            'ALTER', 'DROP', 'INDEX', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES',
+            'UNIQUE', 'CHECK', 'DEFAULT', 'AUTO_INCREMENT', 'CONSTRAINT',
+            'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'DISTINCT', 'ALL', 'ANY', 'SOME',
+            'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'IF', 'COALESCE',
+            'CAST', 'CONVERT', 'SUBSTRING', 'LENGTH', 'UPPER', 'LOWER', 'TRIM',
+            'UNION', 'INTERSECT', 'EXCEPT', 'WITH', 'RECURSIVE'
+        ];
+        
+        // Check if the word just completed is a SQL keyword
+        const beforeCursor = line.substring(0, cursor.ch);
+        const wordMatch = beforeCursor.match(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*$/);
+        
+        if (wordMatch) {
+            const word = wordMatch[1];
+            const wordUpper = word.toUpperCase();
+            
+            // Check if this word is a SQL keyword and is currently lowercase/mixed case
+            if (sqlKeywords.includes(wordUpper) && word !== wordUpper) {
+                const wordStart = beforeCursor.length - wordMatch[0].length + (wordMatch[0].length - word.length);
+                const wordEnd = wordStart + word.length;
+                
+                // iOS-specific handling to prevent scroll-to-top
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                
+                if (isMobile) {
+                    // On mobile, use a more careful approach to prevent unwanted scrolling
+                    const savedScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const savedCursor = this.sqlEditor.getCursor();
+                    
+                    // Replace the word with its uppercase version
+                    this.sqlEditor.replaceRange(
+                        wordUpper,
+                        { line: cursor.line, ch: wordStart },
+                        { line: cursor.line, ch: wordEnd }
+                    );
+                    
+                    // Restore cursor position and prevent any focus/scroll changes
+                    this.sqlEditor.setCursor(savedCursor);
+                    
+                    // Prevent any scroll changes with multiple methods
+                    requestAnimationFrame(() => {
+                        window.scrollTo(0, savedScrollTop);
+                        document.documentElement.scrollTop = savedScrollTop;
+                        document.body.scrollTop = savedScrollTop;
+                    });
+                    
+                    // Additional safety for iOS
+                    setTimeout(() => {
+                        if (window.pageYOffset !== savedScrollTop) {
+                            window.scrollTo(0, savedScrollTop);
+                        }
+                    }, 100);
+                } else {
+                    // Desktop - standard replacement
+                    this.sqlEditor.replaceRange(
+                        wordUpper,
+                        { line: cursor.line, ch: wordStart },
+                        { line: cursor.line, ch: wordEnd }
+                    );
+                }
+            }
         }
     }
 
@@ -112,12 +195,28 @@ class SQLPracticeApp {
                 const wordStart = beforeCursor.length - wordMatch[0].length + (wordMatch[0].length - word.length);
                 const wordEnd = wordStart + word.length;
                 
+                // Preserve scroll position on iOS during replacement
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                let savedScrollTop;
+                
+                if (isMobile) {
+                    savedScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                }
+                
                 // Replace the word with its uppercase version
                 this.sqlEditor.replaceRange(
                     wordUpper,
                     { line: cursor.line, ch: wordStart },
                     { line: cursor.line, ch: wordEnd }
                 );
+                
+                // Restore scroll position on iOS
+                if (isMobile && savedScrollTop !== undefined) {
+                    // Use requestAnimationFrame to ensure the scroll happens after the DOM update
+                    requestAnimationFrame(() => {
+                        window.scrollTo(0, savedScrollTop);
+                    });
+                }
             }
         }
     }
