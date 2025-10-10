@@ -29,14 +29,18 @@ class SQLPracticeApp {
     initializeCodeMirror() {
         const textarea = document.getElementById('sqlInput');
         
+        // Detect mobile/touch devices
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
         this.sqlEditor = CodeMirror.fromTextArea(textarea, {
             mode: 'text/x-sql',
             theme: document.body.classList.contains('dark-theme') ? 'dracula' : 'default',
-            lineNumbers: true,
+            lineNumbers: !isMobile, // Hide line numbers on mobile for more space
             matchBrackets: true,
             indentUnit: 2,
             smartIndent: true,
             lineWrapping: true,
+            scrollbarStyle: isMobile ? null : 'native', // Better scrolling on mobile
             extraKeys: {
                 'Ctrl-Enter': () => this.executeQuery(),
                 'Ctrl-Space': 'autocomplete'
@@ -58,6 +62,23 @@ class SQLPracticeApp {
                 this.autoCapitalizeKeywords();
             }
         });
+        
+        // iOS/Mobile specific fixes
+        if (isMobile) {
+            // Prevent iOS zoom when focusing
+            const cmElement = this.sqlEditor.getWrapperElement();
+            cmElement.style.fontSize = '16px';
+            
+            // Add touch-friendly behavior
+            this.sqlEditor.on('focus', () => {
+                // Small delay to prevent iOS zoom
+                setTimeout(() => {
+                    if (window.scrollY > 0) {
+                        window.scrollTo(0, 0);
+                    }
+                }, 100);
+            });
+        }
     }
 
     autoCapitalizeKeywords() {
