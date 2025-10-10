@@ -1,6 +1,7 @@
 class SQLPracticeApp {
     constructor() {
         this.dbManager = new DatabaseManager();
+        this.sqlEditor = null; // CodeMirror editor instance
         this.initializeApp();
     }
 
@@ -9,6 +10,7 @@ class SQLPracticeApp {
         
         try {
             await this.dbManager.initialize();
+            this.initializeCodeMirror();
             this.setupEventListeners();
             this.initializeTheme();
             this.handleResponsiveSchema();
@@ -24,6 +26,41 @@ class SQLPracticeApp {
         }
     }
 
+    initializeCodeMirror() {
+        const textarea = document.getElementById('sqlInput');
+        
+        this.sqlEditor = CodeMirror.fromTextArea(textarea, {
+            mode: 'text/x-sql',
+            theme: document.body.classList.contains('dark-theme') ? 'dracula' : 'default',
+            lineNumbers: true,
+            matchBrackets: true,
+            indentUnit: 2,
+            smartIndent: true,
+            lineWrapping: true,
+            extraKeys: {
+                'Ctrl-Enter': () => this.executeQuery(),
+                'Ctrl-Space': 'autocomplete'
+            },
+            hintOptions: {
+                tables: {
+                    'Heroes': ['HeroID', 'HeroName', 'RealName', 'City', 'Universe', 'PowerLevel', 'FirstAppearance'],
+                    'Villains': ['VillainID', 'VillainName', 'RealName', 'City', 'ThreatLevel', 'LastSeen'],
+                    'Powers': ['PowerID', 'PowerName', 'PowerType', 'EnergyRequired', 'DangerLevel', 'CreationDate'],
+                    'HeroPowers': ['HeroID', 'PowerID', 'ProficiencyLevel', 'YearsOfTraining'],
+                    'Missions': ['MissionID', 'HeroID', 'VillainID', 'MissionDate', 'Status', 'Difficulty']
+                }
+            },
+            placeholder: 'Enter your SQL query here...\nExample: SELECT * FROM Heroes WHERE PowerLevel > 90;'
+        });
+        
+        // Auto-trigger hints on typing
+        this.sqlEditor.on('inputRead', (cm, change) => {
+            if (change.text[0].match(/[a-zA-Z]/)) {
+                CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
+            }
+        });
+    }
+
     setupEventListeners() {
         // Execute button
         document.getElementById('executeBtn').addEventListener('click', () => {
@@ -32,7 +69,7 @@ class SQLPracticeApp {
 
         // Clear button
         document.getElementById('clearBtn').addEventListener('click', () => {
-            document.getElementById('sqlInput').value = '';
+            this.sqlEditor.setValue('');
             this.clearResults();
         });
 
@@ -87,7 +124,7 @@ class SQLPracticeApp {
         document.querySelectorAll('.example-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const query = e.target.getAttribute('data-query');
-                document.getElementById('sqlInput').value = query;
+                this.sqlEditor.setValue(query);
             });
         });
 
@@ -113,7 +150,7 @@ class SQLPracticeApp {
                 document.getElementById('exerciseDisplay').style.display = 'block';
                 
                 // Clear the SQL input for student to write their own query
-                document.getElementById('sqlInput').value = '';
+                this.sqlEditor.setValue('');
                 this.clearResults();
                 
                 // Responsive scroll behavior
@@ -140,16 +177,27 @@ class SQLPracticeApp {
             });
         });
 
-        // Enter key to execute
-        document.getElementById('sqlInput').addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 'Enter') {
-                this.executeQuery();
+        // Exercise button event delegation
+        document.querySelector('.examples, .exercise-sections').addEventListener('click', (e) => {
+            if (e.target.classList.contains('exercise-btn')) {
+                const exerciseNumber = e.target.dataset.exercise;
+                const title = e.target.dataset.title;
+                const description = e.target.dataset.description;
+                this.displayExercise(exerciseNumber, title, description);
             }
+        });
+
+        // Example query buttons
+        document.querySelectorAll('.example-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const query = btn.dataset.query;
+                this.sqlEditor.setValue(query);
+            });
         });
     }
 
     executeQuery() {
-        let query = document.getElementById('sqlInput').value.trim();
+        let query = this.sqlEditor.getValue().trim();
         // Normalize all smart quotes, apostrophes, and similar characters to standard ones
         query = query
             // Double quotes
@@ -366,11 +414,19 @@ class SQLPracticeApp {
             document.body.classList.remove('dark-theme');
             localStorage.setItem('sql-practice-theme', 'light');
             this.updateThemeIcon(false);
+            // Update CodeMirror theme
+            if (this.sqlEditor) {
+                this.sqlEditor.setOption('theme', 'default');
+            }
         } else {
             // Switch to dark mode
             document.body.classList.add('dark-theme');
             localStorage.setItem('sql-practice-theme', 'dark');
             this.updateThemeIcon(true);
+            // Update CodeMirror theme
+            if (this.sqlEditor) {
+                this.sqlEditor.setOption('theme', 'dracula');
+            }
         }
     }
 
@@ -411,6 +467,10 @@ class SQLPracticeApp {
         // Set up resize listener to handle desktop/mobile transitions
         window.addEventListener('resize', () => {
             this.checkSchemaVisibility();
+            // Refresh CodeMirror on resize to ensure proper display
+            if (this.sqlEditor) {
+                setTimeout(() => this.sqlEditor.refresh(), 100);
+            }
         });
         
         // Initial check

@@ -594,6 +594,152 @@ header {
     background: var(--input-focus-bg);
 }
 
+/* CodeMirror Editor Styling */
+.CodeMirror {
+    height: 200px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-size: 14px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.CodeMirror:focus-within {
+    border-color: #667eea;
+    background: var(--input-focus-bg);
+}
+
+.CodeMirror-focused {
+    border-color: #667eea;
+}
+
+.CodeMirror-gutters {
+    background: var(--input-bg);
+    border-right: 1px solid var(--border-color);
+}
+
+.CodeMirror-linenumber {
+    color: var(--text-secondary);
+    background: transparent;
+}
+
+.CodeMirror-cursor {
+    border-color: var(--text-primary);
+}
+
+.CodeMirror-selected {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+.CodeMirror-line::selection,
+.CodeMirror-line > span::selection,
+.CodeMirror-line > span > span::selection {
+    background: rgba(102, 126, 234, 0.3);
+}
+
+/* SQL Syntax Highlighting for Light Theme */
+.light-theme .cm-keyword {
+    color: #0066cc;
+    font-weight: bold;
+}
+
+.light-theme .cm-string {
+    color: #008000;
+}
+
+.light-theme .cm-number {
+    color: #d14;
+}
+
+.light-theme .cm-comment {
+    color: #999988;
+    font-style: italic;
+}
+
+.light-theme .cm-operator {
+    color: #333;
+}
+
+.light-theme .cm-variable {
+    color: #333;
+}
+
+.light-theme .cm-variable-2 {
+    color: #0086b3;
+}
+
+.light-theme .cm-variable-3 {
+    color: #795da3;
+}
+
+.light-theme .cm-builtin {
+    color: #0066cc;
+}
+
+/* SQL Syntax Highlighting for Dark Theme */
+.dark-theme .cm-keyword {
+    color: #569cd6;
+    font-weight: bold;
+}
+
+.dark-theme .cm-string {
+    color: #ce9178;
+}
+
+.dark-theme .cm-number {
+    color: #b5cea8;
+}
+
+.dark-theme .cm-comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+.dark-theme .cm-operator {
+    color: #d4d4d4;
+}
+
+.dark-theme .cm-variable {
+    color: #9cdcfe;
+}
+
+.dark-theme .cm-variable-2 {
+    color: #4ec9b0;
+}
+
+.dark-theme .cm-variable-3 {
+    color: #dcdcaa;
+}
+
+.dark-theme .cm-builtin {
+    color: #569cd6;
+}
+
+/* CodeMirror Hints/Autocomplete styling */
+.CodeMirror-hints {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.CodeMirror-hint {
+    color: var(--text-primary);
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.CodeMirror-hint-active {
+    background: #667eea;
+    color: white;
+}
+
 .editor-controls {
     margin-top: 15px;
     display: flex;
