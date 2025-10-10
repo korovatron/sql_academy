@@ -59,6 +59,55 @@ class SQLPracticeApp {
                 CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
             }
         });
+        
+        // Auto-capitalize SQL keywords when user finishes typing them
+        this.sqlEditor.on('inputRead', (cm, change) => {
+            // Check if user just typed a space, punctuation, or newline (indicating end of word)
+            if (change.text[0].match(/[\s,;()\n]/)) {
+                this.autoCapitalizeKeywords();
+            }
+        });
+    }
+
+    autoCapitalizeKeywords() {
+        const cursor = this.sqlEditor.getCursor();
+        const line = this.sqlEditor.getLine(cursor.line);
+        
+        // Define SQL keywords that should be capitalized
+        const sqlKeywords = [
+            'SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'LEFT', 'RIGHT', 'FULL', 'OUTER',
+            'ON', 'AND', 'OR', 'NOT', 'IN', 'LIKE', 'BETWEEN', 'IS', 'NULL', 'AS',
+            'ORDER', 'BY', 'ASC', 'DESC', 'GROUP', 'HAVING', 'LIMIT', 'OFFSET',
+            'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE', 'CREATE', 'TABLE',
+            'ALTER', 'DROP', 'INDEX', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCES',
+            'UNIQUE', 'CHECK', 'DEFAULT', 'AUTO_INCREMENT', 'CONSTRAINT',
+            'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'DISTINCT', 'ALL', 'ANY', 'SOME',
+            'EXISTS', 'CASE', 'WHEN', 'THEN', 'ELSE', 'END', 'IF', 'COALESCE',
+            'CAST', 'CONVERT', 'SUBSTRING', 'LENGTH', 'UPPER', 'LOWER', 'TRIM',
+            'UNION', 'INTERSECT', 'EXCEPT', 'WITH', 'RECURSIVE'
+        ];
+        
+        // Look for the word just before the cursor (before the character just typed)
+        const beforeCursor = line.substring(0, cursor.ch - 1);
+        const wordMatch = beforeCursor.match(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*$/);
+        
+        if (wordMatch) {
+            const word = wordMatch[1];
+            const wordUpper = word.toUpperCase();
+            
+            // Check if this word is a SQL keyword and is currently lowercase/mixed case
+            if (sqlKeywords.includes(wordUpper) && word !== wordUpper) {
+                const wordStart = beforeCursor.length - wordMatch[0].length + (wordMatch[0].length - word.length);
+                const wordEnd = wordStart + word.length;
+                
+                // Replace the word with its uppercase version
+                this.sqlEditor.replaceRange(
+                    wordUpper,
+                    { line: cursor.line, ch: wordStart },
+                    { line: cursor.line, ch: wordEnd }
+                );
+            }
+        }
     }
 
     setupEventListeners() {
