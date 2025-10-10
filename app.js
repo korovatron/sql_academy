@@ -69,15 +69,25 @@ class SQLPracticeApp {
             const cmElement = this.sqlEditor.getWrapperElement();
             cmElement.style.fontSize = '16px';
             
-            // Add touch-friendly behavior
-            this.sqlEditor.on('focus', () => {
-                // Small delay to prevent iOS zoom
-                setTimeout(() => {
-                    if (window.scrollY > 0) {
-                        window.scrollTo(0, 0);
-                    }
-                }, 100);
-            });
+            // iOS-specific: prevent unwanted scroll behavior without forcing scroll to top
+            if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+                // Save the current scroll position when focusing
+                let savedScrollTop = 0;
+                
+                this.sqlEditor.on('beforeChange', () => {
+                    savedScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                });
+                
+                // Prevent any unwanted scrolling during focus/blur
+                this.sqlEditor.on('focus', () => {
+                    // Don't force scroll to top - just prevent unwanted jumps
+                    document.body.style.position = 'relative';
+                });
+                
+                this.sqlEditor.on('blur', () => {
+                    document.body.style.position = '';
+                });
+            }
         }
     }
 

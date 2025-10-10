@@ -1139,10 +1139,26 @@ footer {
     .CodeMirror {
         font-size: 16px !important;
         -webkit-text-size-adjust: none;
+        -webkit-overflow-scrolling: touch;
+        /* Prevent layout shifts that cause scroll jumping */
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
     }
     
     .CodeMirror-focused {
         -webkit-user-select: text;
         user-select: text;
+    }
+    
+    /* Stabilize the layout during focus events */
+    .CodeMirror-wrap {
+        min-height: 120px;
+    }
+    
+    /* Prevent any sudden layout changes */
+    .CodeMirror-scroll {
+        padding-bottom: 0 !important;
     }
 }
