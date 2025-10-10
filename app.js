@@ -41,15 +41,6 @@ class SQLPracticeApp {
                 'Ctrl-Enter': () => this.executeQuery(),
                 'Ctrl-Space': 'autocomplete'
             },
-            hintOptions: {
-                tables: {
-                    'Heroes': ['HeroID', 'HeroName', 'RealName', 'City', 'Universe', 'PowerLevel', 'FirstAppearance'],
-                    'Villains': ['VillainID', 'VillainName', 'RealName', 'City', 'ThreatLevel', 'LastSeen'],
-                    'Powers': ['PowerID', 'PowerName', 'PowerType', 'EnergyRequired', 'DangerLevel', 'CreationDate'],
-                    'HeroPowers': ['HeroID', 'PowerID', 'ProficiencyLevel', 'YearsOfTraining'],
-                    'Missions': ['MissionID', 'HeroID', 'VillainID', 'MissionDate', 'Status', 'Difficulty']
-                }
-            },
             placeholder: 'Enter your SQL query here...\nExample: SELECT * FROM Heroes WHERE PowerLevel > 90;'
         });
         
