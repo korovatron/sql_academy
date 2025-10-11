@@ -750,53 +750,71 @@ header {
 
 .editor-controls button {
     padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.3s ease;
     min-height: 44px; /* iOS minimum touch target */
     flex: 1;
     min-width: 120px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 #executeBtn {
-    background: #48bb78;
+    background: #667eea;
+    border-color: #5a6fd8;
     color: white;
+    font-weight: 600;
 }
 
 #executeBtn:hover {
-    background: #38a169;
+    background: #5a6fd8;
+    border-color: #4c63d2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 #executeBtn:active {
-    background: #2f855a;
+    background: #4c63d2;
+    transform: translateY(0);
 }
 
 #clearBtn {
-    background: #ed8936;
-    color: white;
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
 }
 
 #clearBtn:hover {
-    background: #dd6b20;
+    background: var(--bg-accent);
+    border-color: var(--border-light);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 #clearBtn:active {
-    background: #c05621;
+    background: var(--bg-tertiary);
+    transform: translateY(0);
 }
 
 #resetDbBtn {
-    background: #e53e3e;
-    color: white;
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
 }
 
 #resetDbBtn:hover {
-    background: #c53030;
+    background: var(--bg-accent);
+    border-color: var(--border-light);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 #resetDbBtn:active {
-    background: #9c2626;
+    background: var(--bg-tertiary);
+    transform: translateY(0);
 }
 
 #results {

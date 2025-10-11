@@ -649,11 +649,11 @@ class SQLPracticeApp {
             schemaToggle.classList.remove('collapsed');
             schemaToggle.setAttribute('aria-label', 'Hide schema');
         } else {
-            // Mobile mode - collapse schema by default if not already set
+            // Mobile mode - expand schema by default if not already set by user
             if (!schemaContainer.hasAttribute('data-user-toggled')) {
-                schemaContainer.classList.add('collapsed');
-                schemaToggle.classList.add('collapsed');
-                schemaToggle.setAttribute('aria-label', 'Show schema');
+                schemaContainer.classList.remove('collapsed');
+                schemaToggle.classList.remove('collapsed');
+                schemaToggle.setAttribute('aria-label', 'Hide schema');
             }
         }
     }
