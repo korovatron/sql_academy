@@ -1,12 +1,12 @@
-# 🦸‍♂️ Mr Kendall's SQL-ution Academy 101 - Complete Solutions Guide
+# 🦸‍♂️ Mr Kendall's SQL Academy - Complete Solutions Guide
 
 ## 📖 About This Guide
 
-This comprehensive guide contains solutions for all 39 exercises in Mr Kendall's SQL-ution Academy 101. Each solution is designed to teach specific SQL concepts using our superhero database schema.
+This comprehensive guide contains solutions for all 44 exercises in Mr Kendall's SQL Academy. Each solution is designed to teach specific SQL concepts using our superhero database schema.
 
 ## 🗃️ Database Schema Overview
 
-Our superhero database consists of 5 main tables:
+The superhero database consists of 5 main tables:
 
 ### **Heroes Table**
 - `HeroID` (INTEGER PRIMARY KEY)
@@ -40,16 +40,19 @@ Our superhero database consists of 5 main tables:
 - `MissionDate` (TEXT) - Date in YYYY-MM-DD format
 - `Difficulty` (TEXT) - Easy, Medium, Hard, Extreme
 - `Status` (TEXT) - Completed, In Progress, Failed
+- **Foreign Key Constraints:** HeroID → Heroes(HeroID), VillainID → Villains(VillainID)
 
 ### **HeroPowers Table** (Junction Table)
-- `HeroID` (INTEGER) - Foreign Key to Heroes
-- `PowerID` (INTEGER) - Foreign Key to Powers
+- `HeroID` (INTEGER) - Foreign Key to Heroes, part of composite primary key
+- `PowerID` (INTEGER) - Foreign Key to Powers, part of composite primary key
 - `ProficiencyLevel` (INTEGER) - 1-100 scale
 - `YearsTraining` (INTEGER)
+- **Composite Primary Key:** (HeroID, PowerID)
+- **Foreign Key Constraints:** HeroID → Heroes(HeroID), PowerID → Powers(PowerID)
 
 ---
 
-## 🏋️‍♂️ **Module 1: SELECT-ive Vision { SELECT }**
+## 🏋️‍♂️ **Module 1: SELECT (6 exercises)**
 *Master the art of querying data with SELECT statements*
 
 ### **Exercise 1: Basic SELECT** 
@@ -118,7 +121,7 @@ SELECT VillainName, ThreatLevel FROM Villains ORDER BY ThreatLevel DESC;
 
 ---
 
-## 🤝 **Module 2: The JOIN-t Venture { JOIN }**
+## 🤝 **Module 2: JOIN tables (4 exercises)**
 *Learn to combine data from multiple tables*
 
 ### **Exercise 7: Basic Two-Table Join**
@@ -178,7 +181,7 @@ ORDER BY Missions.MissionDate DESC;
 
 ---
 
-## 🚀 **Module 3: The Avengers Assemble { MULTI-JOIN }**
+## 🚀 **Module 3: JOIN multiple tables (5 exercises)**
 *Master complex multi-table operations*
 
 ### **Exercise 11: Complete Mission Details**
@@ -211,7 +214,7 @@ AND HeroPowers.ProficiencyLevel > 90;
 
 ---
 
-### **Exercise 13: Most Dangerous Abilities**
+### **Exercise 13: Dangerous Power Users**
 **Task:** Show HeroName, PowerName, and DangerLevel for powers with DangerLevel greater than 7. Order by DangerLevel descending.
 
 ```sql
@@ -227,7 +230,7 @@ ORDER BY Powers.DangerLevel DESC;
 
 ---
 
-### **Exercise 14: Challenging Missions**
+### **Exercise 14: Mission Difficulty Analysis**
 **Task:** Show HeroName, VillainName, and Difficulty for all 'Hard' or 'Extreme' difficulty missions, ordered by hero name alphabetically.
 
 ```sql
@@ -243,7 +246,7 @@ ORDER BY Heroes.HeroName ASC;
 
 ---
 
-### **Exercise 15: Marvel Reality Masters**
+### **Exercise 15: Advanced Hero Analysis**
 **Task:** Show HeroName, PowerName, and FirstAppearance for Marvel heroes who have Reality-type powers. Order by PowerName alphabetically.
 
 ```sql
@@ -260,7 +263,7 @@ ORDER BY Powers.PowerName ASC;
 
 ---
 
-## ➕ **Module 4: INSERT-o Powers { INSERT }**
+## ➕ **Module 4: INSERT INTO (5 exercises)**
 *Learn to add new data to your database*
 
 ### **Exercise 16: Add New Hero**
@@ -323,10 +326,10 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');
 
 ---
 
-## 🔄 **Module 5: Power UP-DATE { UPDATE }**
+## 🔄 **Module 5: UPDATE (5 exercises)**
 *Master the art of modifying existing data*
 
-### **Exercise 21: Boost Hero Power**
+### **Exercise 21: Power Level Boost**
 **Task:** Update Spider-Man's power level to 90. Use UPDATE statement with WHERE clause to target the specific hero by name.
 
 ```sql
@@ -337,7 +340,7 @@ UPDATE Heroes SET PowerLevel = 90 WHERE HeroName = 'Spider-Man';
 
 ---
 
-### **Exercise 22: Complete Mission**
+### **Exercise 22: Mission Status Update**
 **Task:** Update the mission with ID 1004 to change its status from 'In Progress' to 'Completed'.
 
 ```sql
@@ -348,7 +351,7 @@ UPDATE Missions SET Status = 'Completed' WHERE MissionID = 1004;
 
 ---
 
-### **Exercise 23: Update Villain Activity**
+### **Exercise 23: Villain Activity Update**
 **Task:** Update the Joker's last seen date to '2024-10-01' to reflect recent criminal activity.
 
 ```sql
@@ -359,7 +362,7 @@ UPDATE Villains SET LastSeen = '2024-10-01' WHERE VillainName = 'Joker';
 
 ---
 
-### **Exercise 24: Multiple Field Changes**
+### **Exercise 24: Multiple Field Update**
 **Task:** Update Iron Man to increase his power level to 95 AND change his city to 'Los Angeles'. Use a single UPDATE statement.
 
 ```sql
@@ -370,7 +373,7 @@ UPDATE Heroes SET PowerLevel = 95, City = 'Los Angeles' WHERE HeroName = 'Iron M
 
 ---
 
-### **Exercise 25: Bulk Power Adjustment**
+### **Exercise 25: Conditional Power Update**
 **Task:** Update all powers with danger level greater than 8 to increase their energy required by 10. This affects multiple records with one UPDATE.
 
 ```sql
@@ -381,10 +384,10 @@ UPDATE Powers SET EnergyRequired = EnergyRequired + 10 WHERE DangerLevel > 8;
 
 ---
 
-## 🗑️ **Module 6: DELETE-ing Villains { DELETE }**
+## 🗑️ **Module 6: DELETE (5 exercises)**
 *Learn to safely remove unwanted data*
 
-### **Exercise 26: Clean Up Failed Mission**
+### **Exercise 26: Remove Failed Mission**
 **Task:** Delete the mission with status 'Failed' from the Missions table. Use WHERE clause to target only failed missions.
 
 ```sql
@@ -395,7 +398,7 @@ DELETE FROM Missions WHERE Status = 'Failed';
 
 ---
 
-### **Exercise 27: Remove Minor Villain**
+### **Exercise 27: Remove Low-Threat Villain**
 **Task:** Delete the villain 'Taskmaster' from the Villains table. Target by villain name.
 
 ```sql
@@ -406,7 +409,7 @@ DELETE FROM Villains WHERE VillainName = 'Taskmaster';
 
 ---
 
-### **Exercise 28: Remove Power Assignment**
+### **Exercise 28: Remove Hero Power**
 **Task:** Remove the power relationship between Iron Man (HeroID 4) and Flight (PowerID 3) from the HeroPowers table. Use both HeroID and PowerID in WHERE clause.
 
 ```sql
@@ -417,7 +420,7 @@ DELETE FROM HeroPowers WHERE HeroID = 4 AND PowerID = 3;
 
 ---
 
-### **Exercise 29: Archive Old Missions**
+### **Exercise 29: Delete Old Missions**
 **Task:** Delete all missions that occurred before '2024-03-20' from the Missions table. Use date comparison in WHERE clause.
 
 ```sql
@@ -428,7 +431,7 @@ DELETE FROM Missions WHERE MissionDate < '2024-03-20';
 
 ---
 
-### **Exercise 30: Remove Weak Heroes**
+### **Exercise 30: Remove Low-Power Heroes**
 **Task:** Delete all heroes with power level less than 85 from the Heroes table. This will affect multiple records - be careful with your WHERE clause!
 
 ```sql
@@ -439,10 +442,10 @@ DELETE FROM Heroes WHERE PowerLevel < 85;
 
 ---
 
-## 🏗️ **Module 7: CREATE-ing New Worlds { DDL }**
+## 🏗️ **Module 7: CREATE TABLE (15 exercises)**
 *Master database structure with Data Definition Language*
 
-### **Exercise 31: Define Teams Table**
+### **Exercise 31: Create Teams Table**
 **Task:** Create a new table called 'Teams' with columns: TeamID (INTEGER PRIMARY KEY), TeamName (TEXT NOT NULL), LeaderID (INTEGER), and City (TEXT).
 
 ```sql
@@ -458,7 +461,7 @@ CREATE TABLE Teams (
 
 ---
 
-### **Exercise 32: Add Team Records**
+### **Exercise 32: Populate Teams Table**
 **Task:** Insert three teams into the Teams table: (1, 'Avengers', 7, 'New York'), (2, 'Justice League', 7, 'Washington DC'), and (3, 'X-Men', 10, 'New York').
 
 ```sql
@@ -472,7 +475,7 @@ INSERT INTO Teams (TeamID, TeamName, LeaderID, City) VALUES
 
 ---
 
-### **Exercise 33: Expand Team Roster**
+### **Exercise 33: Add More Teams**
 **Task:** Insert two more teams: (4, 'Fantastic Four', 4, 'New York') and (5, 'Teen Titans', 3, 'Jump City').
 
 ```sql
@@ -485,7 +488,7 @@ INSERT INTO Teams (TeamID, TeamName, LeaderID, City) VALUES
 
 ---
 
-### **Exercise 34: Fix Leadership Error**
+### **Exercise 34: Correct Team Leader**
 **Task:** There's an error! Justice League should be led by Superman (HeroID 7), but Avengers should be led by Iron Man (HeroID 4). Update the Avengers record to fix this mistake.
 
 ```sql
@@ -496,7 +499,7 @@ UPDATE Teams SET LeaderID = 4 WHERE TeamName = 'Avengers';
 
 ---
 
-### **Exercise 35: Relocate Team**
+### **Exercise 35: Update Team Location**
 **Task:** The Teen Titans have moved! Update their city from 'Jump City' to 'San Francisco' to reflect their new headquarters location.
 
 ```sql
@@ -507,7 +510,7 @@ UPDATE Teams SET City = 'San Francisco' WHERE TeamName = 'Teen Titans';
 
 ---
 
-### **Exercise 36: Add Founded Date**
+### **Exercise 36: Add Column to Teams**
 **Task:** Add a new column called 'Founded' with data type TEXT to the Teams table to track when each team was established.
 
 ```sql
@@ -518,7 +521,7 @@ ALTER TABLE Teams ADD COLUMN Founded TEXT;
 
 ---
 
-### **Exercise 37: Set Team History**
+### **Exercise 37: Update Founded Dates**
 **Task:** Update the Teams table to set founding dates: Avengers = '1963-09-01', Justice League = '1960-03-01', X-Men = '1963-09-01', Fantastic Four = '1961-11-01', Teen Titans = '1964-07-01'.
 
 ```sql
@@ -533,7 +536,7 @@ UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';
 
 ---
 
-### **Exercise 38: Remove Team**
+### **Exercise 38: Remove Disbanded Team**
 **Task:** Unfortunately, the Fantastic Four has disbanded. Delete their record from the Teams table.
 
 ```sql
@@ -544,7 +547,7 @@ DELETE FROM Teams WHERE TeamName = 'Fantastic Four';
 
 ---
 
-### **Exercise 39: Create Team Junction Table**
+### **Exercise 39: Create Team Members Junction Table**
 **Task:** Create a new table called 'TeamMembers' to link heroes to teams. Columns: HeroID (INTEGER), TeamID (INTEGER), JoinDate (TEXT), Role (TEXT). This creates a many-to-many relationship.
 
 ```sql
@@ -560,7 +563,7 @@ CREATE TABLE TeamMembers (
 
 ---
 
-### **Exercise 40: Populate Avengers Team**
+### **Exercise 40: Add Heroes to Avengers**
 **Task:** Add Spider-Man (HeroID 1), Iron Man (HeroID 4), and Captain America (HeroID 8) to the Avengers team (TeamID 1). Set join dates to '2024-01-01' and roles to 'Member'.
 
 ```sql
@@ -574,7 +577,7 @@ INSERT INTO TeamMembers (HeroID, TeamID, JoinDate, Role) VALUES
 
 ---
 
-### **Exercise 41: Populate Justice League**
+### **Exercise 41: Add Heroes to Justice League**
 **Task:** Add Superman (HeroID 7), Batman (HeroID 2), and Wonder Woman (HeroID 3) to Justice League (TeamID 2). Set join dates to '2024-02-01' and roles to 'Member'.
 
 ```sql
@@ -588,8 +591,8 @@ INSERT INTO TeamMembers (HeroID, TeamID, JoinDate, Role) VALUES
 
 ---
 
-### **Exercise 42: View Team Rosters**
-**Task:** Show team names with their member hero names. SELECT TeamName, HeroName FROM Teams, Heroes, TeamMembers WHERE Teams.TeamID = TeamMembers.TeamID AND Heroes.HeroID = TeamMembers.HeroID.
+### **Exercise 42: Query Team Rosters**
+**Task:** Show team names with their member hero names. Use a three-table join connecting Teams, Heroes, and TeamMembers to display which heroes belong to which teams.
 
 ```sql
 SELECT TeamName, HeroName 
@@ -613,7 +616,7 @@ DELETE FROM TeamMembers WHERE HeroID = 1 AND TeamID = 1;
 
 ---
 
-### **Exercise 44: Final Cleanup**
+### **Exercise 44: Clean Up All Tables**
 **Task:** Clean up the database by removing both the TeamMembers and Teams tables using DROP TABLE statements.
 
 ```sql
@@ -627,22 +630,20 @@ DROP TABLE Teams;
 
 ## 🎯 **Learning Progression Summary**
 
-### **Beginner Level (Exercises 1-10)**
-- Basic SELECT statements
-- WHERE clauses for filtering
-- ORDER BY for sorting
-- Simple two-table joins
+### **Beginner Level (Exercises 1-15)**
+- Basic SELECT statements (Exercises 1-6)
+- Simple two-table joins (Exercises 7-10)
+- Complex multi-table joins (Exercises 11-15)
 
-### **Intermediate Level (Exercises 11-25)**
-- Complex multi-table joins
-- INSERT statements for adding data
-- UPDATE statements for modifying data
-- Working with junction tables
+### **Intermediate Level (Exercises 16-30)**
+- INSERT statements for adding data (Exercises 16-20)
+- UPDATE statements for modifying data (Exercises 21-25)
+- DELETE operations for data removal (Exercises 26-30)
 
-### **Advanced Level (Exercises 26-39)**
-- DELETE operations for data removal
-- DDL operations (CREATE, ALTER, DROP)
+### **Advanced Level (Exercises 31-44)**
+- DDL operations (CREATE, ALTER, DROP) (Exercises 31-44)
 - Database design and table management
+- Junction tables and many-to-many relationships
 - Data integrity and relationships
 
 ## 💡 **SQL Best Practices Learned**
