@@ -804,16 +804,23 @@ class ExerciseProgressTracker {
     }
 
     markCompleted(exerciseId) {
-        this.progress[exerciseId] = {
-            completed: true,
-            completedAt: new Date().toISOString()
-        };
+        // Preserve existing data (like saved queries) when marking complete
+        if (!this.progress[exerciseId]) {
+            this.progress[exerciseId] = {};
+        }
+        this.progress[exerciseId].completed = true;
+        this.progress[exerciseId].completedAt = new Date().toISOString();
         this.saveProgress();
         this.updateProgressDisplay();
     }
 
     markIncomplete(exerciseId) {
-        delete this.progress[exerciseId];
+        // Preserve saved queries when unmarking completion
+        if (this.progress[exerciseId]) {
+            this.progress[exerciseId].completed = false;
+            delete this.progress[exerciseId].completedAt;
+            // Keep lastSuccessfulQuery and lastQuerySaved if they exist
+        }
         this.saveProgress();
         this.updateProgressDisplay();
     }
