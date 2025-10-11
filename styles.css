@@ -1384,6 +1384,21 @@ footer {
     filter: brightness(1.2);
 }
 
+/* Fix for completed and selected exercise buttons in light theme */
+.light-theme .exercise-btn.completed.selected {
+    color: white !important;
+}
+
+.light-theme .exercise-btn.completed.selected:hover {
+    color: #1f2937 !important; /* Dark text for visibility on green background */
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2)) !important;
+}
+
+/* Additional specificity for the text content */
+.light-theme .exercise-btn.completed.selected:hover * {
+    color: #1f2937 !important;
+}
+
 /* Responsive progress adjustments */
 @media (max-width: 768px) {
     .exercises-header-container {

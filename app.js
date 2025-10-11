@@ -481,12 +481,26 @@ class SQLPracticeApp {
         this.currentExercise = parseInt(exerciseNumber);
         
         // Remove selected class from all exercise buttons
-        document.querySelectorAll('.exercise-btn').forEach(b => b.classList.remove('selected'));
+        document.querySelectorAll('.exercise-btn').forEach(b => {
+            b.classList.remove('selected');
+            // Clear any applied dark text color when deselecting
+            b.style.removeProperty('color');
+        });
         
         // Add selected class to clicked button
         const selectedBtn = document.querySelector(`[data-exercise="${exerciseNumber}"]`);
         if (selectedBtn) {
             selectedBtn.classList.add('selected');
+            
+            // Apply hover fix if this exercise is completed
+            const isCompleted = this.progressTracker.isCompleted(parseInt(exerciseNumber));
+            this.progressTracker.addHoverFix(selectedBtn, isCompleted);
+            
+            // Immediately apply dark text color if in light theme and completed
+            const isLightTheme = !document.body.classList.contains('dark-theme');
+            if (isCompleted && isLightTheme) {
+                selectedBtn.style.setProperty('color', '#1f2937', 'important');
+            }
         }
         
         // Display exercise information
@@ -979,8 +993,35 @@ class ExerciseProgressTracker {
                 label.innerHTML = isCompleted ? '✅' : '⭕';
                 label.title = isCompleted ? 'Mark as incomplete' : 'Mark as completed';
                 btn.classList.toggle('completed', isCompleted);
+                
+                // Add hover event listeners to fix text color in light theme
+                this.addHoverFix(btn, isCompleted);
             }
         });
+    }
+
+    addHoverFix(btn, isCompleted) {
+        // Remove existing event listeners to prevent duplicates
+        btn.removeEventListener('mouseenter', btn._hoverEnterHandler);
+        btn.removeEventListener('mouseleave', btn._hoverLeaveHandler);
+        
+        // Add new event listeners
+        btn._hoverEnterHandler = () => {
+            const isLightTheme = !document.body.classList.contains('dark-theme');
+            if (isCompleted && btn.classList.contains('selected') && isLightTheme) {
+                btn.style.setProperty('color', '#1f2937', 'important');
+            }
+        };
+        
+        btn._hoverLeaveHandler = () => {
+            const isLightTheme = !document.body.classList.contains('dark-theme');
+            if (isCompleted && btn.classList.contains('selected') && isLightTheme) {
+                btn.style.removeProperty('color');
+            }
+        };
+        
+        btn.addEventListener('mouseenter', btn._hoverEnterHandler);
+        btn.addEventListener('mouseleave', btn._hoverLeaveHandler);
     }
 
     setupProgressEventListeners() {
