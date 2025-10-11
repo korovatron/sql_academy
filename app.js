@@ -583,14 +583,26 @@ class SQLPracticeApp {
             document.body.classList.add('dark-theme');
             localStorage.setItem('sql-practice-theme', 'dark');
             this.updateThemeIcon(true);
+            // Update CodeMirror theme to match
+            if (this.sqlEditor) {
+                this.sqlEditor.setOption('theme', 'dracula');
+            }
         } else {
             // Returning visitor - use saved preference
             if (savedTheme === 'dark') {
                 document.body.classList.add('dark-theme');
                 this.updateThemeIcon(true);
+                // Update CodeMirror theme to match
+                if (this.sqlEditor) {
+                    this.sqlEditor.setOption('theme', 'dracula');
+                }
             } else {
                 document.body.classList.remove('dark-theme');
                 this.updateThemeIcon(false);
+                // Update CodeMirror theme to match
+                if (this.sqlEditor) {
+                    this.sqlEditor.setOption('theme', 'default');
+                }
             }
         }
     }
