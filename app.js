@@ -342,6 +342,11 @@ class SQLPracticeApp {
                 this.displayResults(result.results);
                 this.displayMessage(result.message, 'success');
                 
+                // Save the successful query for this exercise
+                if (this.currentExercise) {
+                    this.progressTracker.saveQuery(this.currentExercise, query);
+                }
+                
                 // If schema changed, update the schema display
                 if (result.schemaChanged && result.schema) {
                     this.updateSchemaDisplay(result.schema);
@@ -472,6 +477,9 @@ class SQLPracticeApp {
     }
 
     displayExercise(exerciseNumber, title, description) {
+        // Store current exercise number for saving queries
+        this.currentExercise = parseInt(exerciseNumber);
+        
         // Remove selected class from all exercise buttons
         document.querySelectorAll('.exercise-btn').forEach(b => b.classList.remove('selected'));
         
@@ -486,8 +494,14 @@ class SQLPracticeApp {
         document.getElementById('exerciseDescription').textContent = description;
         document.getElementById('exerciseDisplay').style.display = 'block';
         
-        // Clear the SQL input for student to write their own query
-        this.sqlEditor.setValue('');
+        // Load stored query if available, otherwise clear the editor
+        const storedQuery = this.progressTracker.getQuery(parseInt(exerciseNumber));
+        if (storedQuery) {
+            const commentedQuery = `-- Last successful query restored\n${storedQuery}`;
+            this.sqlEditor.setValue(commentedQuery);
+        } else {
+            this.sqlEditor.setValue('');
+        }
         this.clearResults();
         
         // Responsive scroll behavior
@@ -782,6 +796,26 @@ class ExerciseProgressTracker {
         return this.progress[exerciseId]?.completed || false;
     }
 
+    // Query storage methods
+    saveQuery(exerciseId, query) {
+        if (!this.progress[exerciseId]) {
+            this.progress[exerciseId] = {};
+        }
+        // Clean the query by removing any "Last successful query restored" comments
+        const cleanedQuery = query.replace(/^-- Last successful query restored\n?/m, '').trim();
+        this.progress[exerciseId].lastSuccessfulQuery = cleanedQuery;
+        this.progress[exerciseId].lastQuerySaved = new Date().toISOString();
+        this.saveProgress();
+    }
+
+    getQuery(exerciseId) {
+        return this.progress[exerciseId]?.lastSuccessfulQuery || null;
+    }
+
+    hasStoredQuery(exerciseId) {
+        return !!(this.progress[exerciseId]?.lastSuccessfulQuery);
+    }
+
     getModuleProgress(moduleNumber) {
         const moduleExercises = this.exercises.filter(ex => ex.module === moduleNumber);
         const completed = moduleExercises.filter(ex => this.isCompleted(ex.id)).length;
@@ -989,5 +1023,10 @@ class ExerciseProgressTracker {
         this.progress = {};
         this.saveProgress();
         this.updateProgressDisplay();
+        
+        // Also clear any stored query in the current editor
+        if (window.sqlApp && window.sqlApp.sqlEditor) {
+            window.sqlApp.sqlEditor.setValue('');
+        }
     }
 }
