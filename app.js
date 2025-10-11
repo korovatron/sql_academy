@@ -2,6 +2,7 @@ class SQLPracticeApp {
     constructor() {
         this.dbManager = new DatabaseManager();
         this.sqlEditor = null; // CodeMirror editor instance
+        this.progressTracker = new ExerciseProgressTracker();
         this.initializeApp();
     }
 
@@ -14,6 +15,7 @@ class SQLPracticeApp {
             this.setupEventListeners();
             this.initializeTheme();
             this.handleResponsiveSchema();
+            this.progressTracker.initialize();
             this.showLoading(false);
             this.displayMessage('Database loaded successfully! You can now execute SQL queries.', 'success');
             
@@ -298,55 +300,6 @@ class SQLPracticeApp {
             });
         });
 
-        // Exercise buttons - new functionality
-        document.querySelectorAll('.exercise-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Prevent default button behavior that might interfere with scrolling
-                e.preventDefault();
-                
-                // Remove selected class from all exercise buttons
-                document.querySelectorAll('.exercise-btn').forEach(b => b.classList.remove('selected'));
-                
-                // Add selected class to clicked button
-                e.target.classList.add('selected');
-                
-                // Get exercise data
-                const title = e.target.getAttribute('data-title');
-                const description = e.target.getAttribute('data-description');
-                
-                // Display exercise information
-                document.getElementById('exerciseTitle').textContent = title;
-                document.getElementById('exerciseDescription').textContent = description;
-                document.getElementById('exerciseDisplay').style.display = 'block';
-                
-                // Clear the SQL input for student to write their own query
-                this.sqlEditor.setValue('');
-                this.clearResults();
-                
-                // Responsive scroll behavior
-                // Use setTimeout to ensure scroll happens after any browser focus changes
-                setTimeout(() => {
-                    // Check if we're on mobile/tablet portrait (1024px is the breakpoint for desktop layout in CSS)
-                    const isMobileOrTablet = window.innerWidth < 1024;
-                    
-                    if (isMobileOrTablet) {
-                        // On mobile/tablet, scroll to the exercise description
-                        const exerciseDisplay = document.getElementById('exerciseDisplay');
-                        exerciseDisplay.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    } else {
-                        // On desktop, scroll to top (exercise description is already visible)
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    }
-                }, 10);
-            });
-        });
-
         // Exercise button event delegation
         document.querySelector('.examples, .exercise-sections').addEventListener('click', (e) => {
             if (e.target.classList.contains('exercise-btn')) {
@@ -518,6 +471,44 @@ class SQLPracticeApp {
         }
     }
 
+    displayExercise(exerciseNumber, title, description) {
+        // Remove selected class from all exercise buttons
+        document.querySelectorAll('.exercise-btn').forEach(b => b.classList.remove('selected'));
+        
+        // Add selected class to clicked button
+        const selectedBtn = document.querySelector(`[data-exercise="${exerciseNumber}"]`);
+        if (selectedBtn) {
+            selectedBtn.classList.add('selected');
+        }
+        
+        // Display exercise information
+        document.getElementById('exerciseTitle').textContent = title;
+        document.getElementById('exerciseDescription').textContent = description;
+        document.getElementById('exerciseDisplay').style.display = 'block';
+        
+        // Clear the SQL input for student to write their own query
+        this.sqlEditor.setValue('');
+        this.clearResults();
+        
+        // Responsive scroll behavior
+        setTimeout(() => {
+            const isMobileOrTablet = window.innerWidth < 1024;
+            
+            if (isMobileOrTablet) {
+                const exerciseDisplay = document.getElementById('exerciseDisplay');
+                exerciseDisplay.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } else {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }, 10);
+    }
+
     clearResults() {
         document.getElementById('results').innerHTML = '';
     }
@@ -683,3 +674,320 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.querySelector('.sql-editor').appendChild(helpText);
 });
+
+// Exercise Progress Tracking System
+class ExerciseProgressTracker {
+    constructor() {
+        this.storageKey = 'sql-academy-progress';
+        this.exercises = this.getExerciseList();
+        this.progress = this.loadProgress();
+    }
+
+    getExerciseList() {
+        return [
+            // Module 1: SELECT (6 exercises)
+            { id: 1, module: 1, title: 'Basic SELECT' },
+            { id: 2, module: 1, title: 'Filtering by Text' },
+            { id: 3, module: 1, title: 'Filtering by Number Range' },
+            { id: 4, module: 1, title: 'Ordering Results' },
+            { id: 5, module: 1, title: 'Date Range Query' },
+            { id: 6, module: 1, title: 'Descending Order' },
+            
+            // Module 2: JOIN tables (4 exercises)
+            { id: 7, module: 2, title: 'Basic Two-Table Join' },
+            { id: 8, module: 2, title: 'Filtered Two-Table Join' },
+            { id: 9, module: 2, title: 'Hero Powers' },
+            { id: 10, module: 2, title: 'Recent Missions' },
+            
+            // Module 3: JOIN multiple tables (5 exercises)
+            { id: 11, module: 3, title: 'Complete Mission Details' },
+            { id: 12, module: 3, title: 'Power Analysis' },
+            { id: 13, module: 3, title: 'Dangerous Power Users' },
+            { id: 14, module: 3, title: 'Mission Difficulty Analysis' },
+            { id: 15, module: 3, title: 'Advanced Hero Analysis' },
+            
+            // Module 4: INSERT INTO (5 exercises)
+            { id: 16, module: 4, title: 'Add New Hero' },
+            { id: 17, module: 4, title: 'Add New Power' },
+            { id: 18, module: 4, title: 'Add New Villain' },
+            { id: 19, module: 4, title: 'Assign Hero Power' },
+            { id: 20, module: 4, title: 'Create Mission' },
+            
+            // Module 5: UPDATE (5 exercises)
+            { id: 21, module: 5, title: 'Power Level Boost' },
+            { id: 22, module: 5, title: 'Mission Status Update' },
+            { id: 23, module: 5, title: 'Villain Activity Update' },
+            { id: 24, module: 5, title: 'Multiple Field Update' },
+            { id: 25, module: 5, title: 'Conditional Power Update' },
+            
+            // Module 6: DELETE (5 exercises)
+            { id: 26, module: 6, title: 'Remove Failed Mission' },
+            { id: 27, module: 6, title: 'Remove Low-Threat Villain' },
+            { id: 28, module: 6, title: 'Remove Hero Power' },
+            { id: 29, module: 6, title: 'Delete Old Missions' },
+            { id: 30, module: 6, title: 'Remove Low-Power Heroes' },
+            
+            // Module 7: CREATE TABLE (15 exercises)
+            { id: 31, module: 7, title: 'Create Teams Table' },
+            { id: 32, module: 7, title: 'Populate Teams Table' },
+            { id: 33, module: 7, title: 'Add More Teams' },
+            { id: 34, module: 7, title: 'Correct Team Leader' },
+            { id: 35, module: 7, title: 'Update Team Location' },
+            { id: 36, module: 7, title: 'Add Column to Teams' },
+            { id: 37, module: 7, title: 'Update Founded Dates' },
+            { id: 38, module: 7, title: 'Remove Disbanded Team' },
+            { id: 39, module: 7, title: 'Create Team Members Junction Table' },
+            { id: 40, module: 7, title: 'Add Heroes to Avengers' },
+            { id: 41, module: 7, title: 'Add Heroes to Justice League' },
+            { id: 42, module: 7, title: 'Query Team Rosters' },
+            { id: 43, module: 7, title: 'Remove Team Member' },
+            { id: 44, module: 7, title: 'Clean Up All Tables' }
+        ];
+    }
+
+    loadProgress() {
+        try {
+            const saved = localStorage.getItem(this.storageKey);
+            return saved ? JSON.parse(saved) : {};
+        } catch (error) {
+            console.error('Error loading progress:', error);
+            return {};
+        }
+    }
+
+    saveProgress() {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(this.progress));
+        } catch (error) {
+            console.error('Error saving progress:', error);
+        }
+    }
+
+    markCompleted(exerciseId) {
+        this.progress[exerciseId] = {
+            completed: true,
+            completedAt: new Date().toISOString()
+        };
+        this.saveProgress();
+        this.updateProgressDisplay();
+    }
+
+    markIncomplete(exerciseId) {
+        delete this.progress[exerciseId];
+        this.saveProgress();
+        this.updateProgressDisplay();
+    }
+
+    isCompleted(exerciseId) {
+        return this.progress[exerciseId]?.completed || false;
+    }
+
+    getModuleProgress(moduleNumber) {
+        const moduleExercises = this.exercises.filter(ex => ex.module === moduleNumber);
+        const completed = moduleExercises.filter(ex => this.isCompleted(ex.id)).length;
+        return {
+            completed,
+            total: moduleExercises.length,
+            percentage: Math.round((completed / moduleExercises.length) * 100)
+        };
+    }
+
+    getTotalProgress() {
+        const completed = Object.keys(this.progress).length;
+        const total = this.exercises.length;
+        return {
+            completed,
+            total,
+            percentage: Math.round((completed / total) * 100)
+        };
+    }
+
+    initialize() {
+        this.addProgressElements();
+        this.updateProgressDisplay();
+        this.setupProgressEventListeners();
+    }
+
+    addProgressElements() {
+        // Add checkboxes to exercise buttons
+        this.addExerciseCheckboxes();
+        
+        // Add module progress indicators
+        this.addModuleProgressIndicators();
+        
+        // Add reset button to exercises section
+        this.addResetButton();
+    }
+
+    addResetButton() {
+        const exercisesHeader = document.querySelector('.example-queries h2');
+        if (exercisesHeader) {
+            // Create a container for the header content
+            const headerContainer = document.createElement('div');
+            headerContainer.className = 'exercises-header-container';
+            
+            // Move the existing h2 content to a span
+            const titleSpan = document.createElement('span');
+            titleSpan.textContent = exercisesHeader.textContent;
+            
+            // Create reset button
+            const resetButton = document.createElement('button');
+            resetButton.id = 'reset-progress-btn';
+            resetButton.className = 'reset-progress-btn-small';
+            resetButton.innerHTML = '🔄';
+            resetButton.title = 'Reset all progress';
+            
+            // Replace h2 content
+            exercisesHeader.innerHTML = '';
+            headerContainer.appendChild(titleSpan);
+            headerContainer.appendChild(resetButton);
+            exercisesHeader.appendChild(headerContainer);
+            
+            // Add instructional text below the header
+            const instructionText = document.createElement('p');
+            instructionText.className = 'progress-instruction';
+            instructionText.innerHTML = '💡 <strong>Tip:</strong> Click the ⭕ circles to mark exercises as complete ✅';
+            exercisesHeader.parentNode.insertBefore(instructionText, exercisesHeader.nextSibling);
+        }
+    }
+
+    addExerciseCheckboxes() {
+        document.querySelectorAll('.exercise-btn').forEach(btn => {
+            const exerciseId = parseInt(btn.dataset.exercise);
+            
+            // Create checkbox container
+            const checkboxContainer = document.createElement('div');
+            checkboxContainer.className = 'exercise-checkbox';
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `exercise-${exerciseId}-checkbox`;
+            checkbox.className = 'exercise-progress-checkbox';
+            checkbox.checked = this.isCompleted(exerciseId);
+            
+            const label = document.createElement('label');
+            label.htmlFor = checkbox.id;
+            label.innerHTML = this.isCompleted(exerciseId) ? '✅' : '⭕';
+            label.title = this.isCompleted(exerciseId) ? 'Mark as incomplete' : 'Mark as completed';
+            
+            checkboxContainer.appendChild(checkbox);
+            checkboxContainer.appendChild(label);
+            
+            // Insert at the beginning of the button
+            btn.insertBefore(checkboxContainer, btn.firstChild);
+        });
+    }
+
+    addModuleProgressIndicators() {
+        document.querySelectorAll('.section-toggle').forEach((toggle, index) => {
+            const moduleNumber = index + 1;
+            const progress = this.getModuleProgress(moduleNumber);
+            
+            // Wrap existing content in a container for left alignment
+            const existingContent = toggle.innerHTML;
+            const leftContainer = document.createElement('span');
+            leftContainer.className = 'module-title-container';
+            leftContainer.innerHTML = existingContent;
+            
+            // Create progress badge
+            const progressIndicator = document.createElement('span');
+            progressIndicator.className = 'module-progress';
+            progressIndicator.id = `module-${moduleNumber}-progress`;
+            
+            // Set badge text and class based on progress
+            this.updateModuleBadge(progressIndicator, progress);
+            
+            // Clear toggle and add both containers
+            toggle.innerHTML = '';
+            toggle.appendChild(leftContainer);
+            toggle.appendChild(progressIndicator);
+        });
+    }
+
+    updateModuleBadge(badge, progress) {
+        // Determine badge class and text based on completion
+        let badgeClass, badgeText;
+        
+        if (progress.completed === 0) {
+            badgeClass = 'none';
+            badgeText = `0/${progress.total}`;
+        } else if (progress.completed === progress.total) {
+            badgeClass = 'completed';
+            badgeText = `${progress.completed}/${progress.total}`;
+        } else {
+            badgeClass = 'partial';
+            badgeText = `${progress.completed}/${progress.total}`;
+        }
+        
+        badge.className = `module-progress ${badgeClass}`;
+        badge.textContent = badgeText;
+    }
+
+    updateProgressDisplay() {
+        // Update module progress indicators
+        for (let i = 1; i <= 7; i++) {
+            const moduleProgress = this.getModuleProgress(i);
+            const badge = document.getElementById(`module-${i}-progress`);
+            if (badge) {
+                this.updateModuleBadge(badge, moduleProgress);
+            }
+        }
+        
+        // Update exercise checkboxes
+        document.querySelectorAll('.exercise-btn').forEach(btn => {
+            const exerciseId = parseInt(btn.dataset.exercise);
+            const checkbox = btn.querySelector('.exercise-progress-checkbox');
+            const label = btn.querySelector('label');
+            
+            if (checkbox && label) {
+                const isCompleted = this.isCompleted(exerciseId);
+                checkbox.checked = isCompleted;
+                label.innerHTML = isCompleted ? '✅' : '⭕';
+                label.title = isCompleted ? 'Mark as incomplete' : 'Mark as completed';
+                btn.classList.toggle('completed', isCompleted);
+            }
+        });
+    }
+
+    setupProgressEventListeners() {
+        // Handle label clicks for progress tracking
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.exercise-checkbox label')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const label = e.target.closest('label');
+                const checkbox = label.previousElementSibling;
+                const exerciseId = parseInt(checkbox.id.match(/exercise-(\d+)-checkbox/)[1]);
+                
+                // Toggle the completion status
+                if (this.isCompleted(exerciseId)) {
+                    this.markIncomplete(exerciseId);
+                } else {
+                    this.markCompleted(exerciseId);
+                }
+            }
+        });
+
+        // Reset progress button
+        document.getElementById('reset-progress-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                this.resetAllProgress();
+            }
+        });
+
+        // Prevent checkbox container clicks from triggering exercise selection
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.exercise-checkbox')) {
+                e.stopPropagation();
+            }
+        });
+    }
+
+    resetAllProgress() {
+        this.progress = {};
+        this.saveProgress();
+        this.updateProgressDisplay();
+    }
+}
