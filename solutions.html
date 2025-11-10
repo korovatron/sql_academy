@@ -5,28 +5,92 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SQL Academy - Complete Solutions Guide</title>
   <style>
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f9f9f9; color: #222; margin: 0; padding: 2em; }
-    h1, h2, h3, h4 { color: #1a1a2e; }
-    h1 { font-size: 2.2em; margin-bottom: 0.2em; }
-    h2 { font-size: 1.5em; margin-top: 2em; }
-    h3 { font-size: 1.2em; margin-top: 1.5em; }
-    pre, code { background: #eaeaea; border-radius: 4px; padding: 0.2em 0.4em; font-family: 'Fira Mono', 'Consolas', monospace; }
-    pre { padding: 1em; overflow-x: auto; }
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --text-primary: #e0e0e0;
+      --text-secondary: #c0c0c0;
+      --text-muted: #a0a0a0;
+      --border-color: #4a4a4a;
+      --code-bg: #3a3a3a;
+      --accent-color: #667eea;
+    }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: var(--bg-primary); 
+      color: var(--text-primary); 
+      margin: 0; 
+      padding: 2em;
+      line-height: 1.6;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1, h2, h3, h4 { color: var(--text-primary); }
+    h1 { font-size: 2.2em; margin-bottom: 0.5em; }
+    h2 { 
+      font-size: 1.5em; 
+      margin-top: 2em; 
+      padding-bottom: 0.3em;
+      border-bottom: 2px solid var(--accent-color);
+    }
+    h3 { 
+      font-size: 1.2em; 
+      margin-top: 1.5em; 
+      color: var(--accent-color);
+    }
+    pre, code { 
+      background: var(--code-bg); 
+      border: 1px solid var(--border-color);
+      border-radius: 4px; 
+      padding: 0.2em 0.4em; 
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+      color: var(--text-primary);
+    }
+    pre { 
+      padding: 1em; 
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+    pre code {
+      border: none;
+      padding: 0;
+      background: transparent;
+    }
     .module { margin-top: 2em; }
-    .goal { color: #444; font-style: italic; margin-bottom: 1em; }
-    .tip { background: #fffbe6; border-left: 4px solid #ffe066; padding: 0.5em 1em; margin: 1em 0; }
-    .quote { font-style: italic; color: #555; margin: 2em 0 1em 0; }
-    ul, ol { margin-left: 2em; }
-    .emoji { font-size: 1.2em; }
-    hr { border: none; border-top: 1px solid #ddd; margin: 2em 0; }
+    .goal { 
+      color: var(--text-muted); 
+      font-style: italic; 
+      margin-bottom: 1em;
+      padding: 0.5em;
+      background: var(--code-bg);
+      border-left: 3px solid var(--accent-color);
+    }
+    .tip { 
+      background: #3a3a1a; 
+      border-left: 4px solid #ffe066; 
+      padding: 0.5em 1em; 
+      margin: 1em 0;
+      color: var(--text-primary);
+    }
+    .quote { 
+      font-style: italic; 
+      color: var(--text-secondary); 
+      margin: 2em 0 1em 0;
+      text-align: center;
+    }
+    ul, ol { margin-left: 2em; line-height: 1.8; }
+    hr { border: none; border-top: 1px solid var(--border-color); margin: 2em 0; }
+    b { color: var(--accent-color); }
   </style>
 </head>
 <body>
-  <h1>🦸‍♂️ SQL Academy - Complete Solutions Guide</h1>
-  <h2>📖 About This Guide</h2>
+  <h1>SQL Academy - Complete Solutions Guide</h1>
+  <h2>About This Guide</h2>
   <p>This comprehensive guide contains solutions for all 44 exercises in SQL Academy. Each solution is designed to teach specific SQL concepts using our superhero database schema.</p>
 
-  <h2>🗃️ Database Schema Overview</h2>
+  <h2>Database Schema Overview</h2>
   <h3>Heroes Table</h3>
   <ul>
     <li><code>HeroID</code> (INTEGER PRIMARY KEY)</li>
@@ -75,7 +139,7 @@
     <li><b>Foreign Key Constraints:</b> HeroID → Heroes(HeroID), PowerID → Powers(PowerID)</li>
   </ul>
   <hr>
-  <h2>🏋️‍♂️ Module 1: SELECT (6 exercises)</h2>
+  <h2>Module 1: SELECT (6 exercises)</h2>
   <p class="goal">Master the art of querying data with SELECT statements</p>
   <h3>Exercise 1: Basic SELECT</h3>
   <p><b>Task:</b> Select all columns from the Heroes table to see all superheroes in the database.</p>
@@ -107,7 +171,7 @@
   <pre><code>SELECT VillainName, ThreatLevel FROM Villains ORDER BY ThreatLevel DESC;</code></pre>
   <p class="goal">Descending sort order</p>
   <hr>
-  <h2>🤝 Module 2: JOIN tables (4 exercises)</h2>
+  <h2>Module 2: JOIN tables (4 exercises)</h2>
   <p class="goal">Learn to combine data from multiple tables</p>
   <h3>Exercise 7: Basic Two-Table Join</h3>
   <p><b>Task:</b> Show each hero's name along with their mission dates. Select HeroName from Heroes and MissionDate from Missions. Use WHERE to join Heroes.HeroID = Missions.HeroID.</p>
@@ -142,7 +206,7 @@ AND Missions.MissionDate > '2024-03-20'
 ORDER BY Missions.MissionDate DESC;</code></pre>
   <p class="goal">Combining joins with date filtering and sorting</p>
   <hr>
-  <h2>🚀 Module 3: JOIN multiple tables (5 exercises)</h2>
+  <h2>Module 3: JOIN multiple tables (5 exercises)</h2>
   <p class="goal">Master complex multi-table operations</p>
   <h3>Exercise 11: Complete Mission Details</h3>
   <p><b>Task:</b> Show HeroName, VillainName, and MissionDate for all completed missions. You'll need to join Heroes, Villains, and Missions tables.</p>
@@ -193,7 +257,7 @@ AND Powers.PowerType = 'Reality'
 ORDER BY Powers.PowerName ASC;</code></pre>
   <p class="goal">Complex filtering across multiple tables with multiple conditions</p>
   <hr>
-  <h2>➕ Module 4: INSERT INTO (5 exercises)</h2>
+  <h2>Module 4: INSERT INTO (5 exercises)</h2>
   <p class="goal">Learn to add new data to your database</p>
   <h3>Exercise 16: Add New Hero</h3>
   <p><b>Task:</b> Insert a new hero named 'Deadpool' with real name 'Wade Wilson', city 'New York', universe 'Marvel', power level 75, and first appearance '1991-02-01'.</p>
@@ -225,7 +289,7 @@ VALUES (11, 11, 95, 10);</code></pre>
 VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
   <p class="goal">Creating records that reference other tables via foreign keys</p>
   <hr>
-  <h2>🔄 Module 5: UPDATE (5 exercises)</h2>
+  <h2>Module 5: UPDATE (5 exercises)</h2>
   <p class="goal">Master the art of modifying existing data</p>
   <h3>Exercise 21: Power Level Boost</h3>
   <p><b>Task:</b> Update Spider-Man's power level to 90. Use UPDATE statement with WHERE clause to target the specific hero by name.</p>
@@ -252,7 +316,7 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
   <pre><code>UPDATE Powers SET EnergyRequired = EnergyRequired + 10 WHERE DangerLevel > 8;</code></pre>
   <p class="goal">Bulk updates affecting multiple records, arithmetic in UPDATE</p>
   <hr>
-  <h2>🗑️ Module 6: DELETE (5 exercises)</h2>
+  <h2>Module 6: DELETE (5 exercises)</h2>
   <p class="goal">Learn to safely remove unwanted data</p>
   <h3>Exercise 26: Remove Failed Mission</h3>
   <p><b>Task:</b> Delete the mission with status 'Failed' from the Missions table. Use WHERE clause to target only failed missions.</p>
@@ -279,7 +343,7 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
   <pre><code>DELETE FROM Heroes WHERE PowerLevel < 85;</code></pre>
   <p class="goal">Bulk DELETE with numeric conditions (affects multiple records)</p>
   <hr>
-  <h2>🏗️ Module 7: CREATE TABLE (15 exercises)</h2>
+  <h2>Module 7: CREATE TABLE (15 exercises)</h2>
   <p class="goal">Master database structure with Data Definition Language</p>
   <h3>Exercise 31: Create Teams Table</h3>
   <p><b>Task:</b> Create a new table called 'Teams' with columns: TeamID (INTEGER PRIMARY KEY), TeamName (TEXT NOT NULL), LeaderID (INTEGER), and City (TEXT).</p>
@@ -380,7 +444,7 @@ AND Heroes.HeroID = TeamMembers.HeroID;</code></pre>
 DROP TABLE Teams;</code></pre>
   <p class="goal">Proper cleanup order when dropping related tables</p>
   <hr>
-  <h2>🎯 Learning Progression Summary</h2>
+  <h2>Learning Progression Summary</h2>
   <h3>Beginner Level (Exercises 1-15)</h3>
   <ul>
     <li>Basic SELECT statements (Exercises 1-6)</li>
@@ -400,7 +464,7 @@ DROP TABLE Teams;</code></pre>
     <li>Junction tables and many-to-many relationships</li>
     <li>Data integrity and relationships</li>
   </ul>
-  <h2>💡 SQL Best Practices Learned</h2>
+  <h2>SQL Best Practices Learned</h2>
   <ol>
     <li>Always use WHERE clauses with UPDATE and DELETE to avoid affecting all records</li>
     <li>Test queries with SELECT first before using UPDATE or DELETE</li>
@@ -409,7 +473,7 @@ DROP TABLE Teams;</code></pre>
     <li>Plan your database structure before creating tables</li>
     <li>Use transactions for complex operations (advanced topic)</li>
   </ol>
-  <h2>🚀 Next Steps</h2>
+  <h2>Next Steps</h2>
   <p>After completing these exercises, students should be able to:</p>
   <ul>
     <li>Write complex SELECT queries with multiple joins</li>
@@ -419,7 +483,6 @@ DROP TABLE Teams;</code></pre>
     <li>Work with real-world database scenarios</li>
   </ul>
   <hr>
-  <p class="emoji">🦸‍♂️🦸‍♀️</p>
   <p class="quote">"With great SQL power comes great responsibility!" - Uncle Ben (probably)</p>
 </body>
 </html>
