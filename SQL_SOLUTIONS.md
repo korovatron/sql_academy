@@ -1,10 +1,10 @@
-# 🦸‍♂️ Mr Kendall's SQL Academy - Complete Solutions Guide
+# Mr Kendall's SQL Academy - Complete Solutions Guide
 
-## 📖 About This Guide
+## About This Guide
 
 This comprehensive guide contains solutions for all 44 exercises in Mr Kendall's SQL Academy. Each solution is designed to teach specific SQL concepts using our superhero database schema.
 
-## 🗃️ Database Schema Overview
+## Database Schema Overview
 
 The superhero database consists of 5 main tables:
 
@@ -52,7 +52,7 @@ The superhero database consists of 5 main tables:
 
 ---
 
-## 🏋️‍♂️ **Module 1: SELECT (6 exercises)**
+## **Module 1: SELECT (6 exercises)**
 *Master the art of querying data with SELECT statements*
 
 ### **Exercise 1: Basic SELECT** 
@@ -121,7 +121,7 @@ SELECT VillainName, ThreatLevel FROM Villains ORDER BY ThreatLevel DESC;
 
 ---
 
-## 🤝 **Module 2: JOIN tables (4 exercises)**
+## **Module 2: JOIN tables (4 exercises)**
 *Learn to combine data from multiple tables*
 
 ### **Exercise 7: Basic Two-Table Join**
@@ -181,7 +181,7 @@ ORDER BY Missions.MissionDate DESC;
 
 ---
 
-## 🚀 **Module 3: JOIN multiple tables (5 exercises)**
+## **Module 3: JOIN multiple tables (5 exercises)**
 *Master complex multi-table operations*
 
 ### **Exercise 11: Complete Mission Details**
@@ -263,7 +263,7 @@ ORDER BY Powers.PowerName ASC;
 
 ---
 
-## ➕ **Module 4: INSERT INTO (5 exercises)**
+## **Module 4: INSERT INTO (5 exercises)**
 *Learn to add new data to your database*
 
 ### **Exercise 16: Add New Hero**
@@ -326,7 +326,7 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');
 
 ---
 
-## 🔄 **Module 5: UPDATE (5 exercises)**
+## **Module 5: UPDATE (5 exercises)**
 *Master the art of modifying existing data*
 
 ### **Exercise 21: Power Level Boost**
@@ -384,7 +384,7 @@ UPDATE Powers SET EnergyRequired = EnergyRequired + 10 WHERE DangerLevel > 8;
 
 ---
 
-## 🗑️ **Module 6: DELETE (5 exercises)**
+## **Module 6: DELETE (5 exercises)**
 *Learn to safely remove unwanted data*
 
 ### **Exercise 26: Remove Failed Mission**
@@ -442,7 +442,7 @@ DELETE FROM Heroes WHERE PowerLevel < 85;
 
 ---
 
-## 🏗️ **Module 7: CREATE TABLE (15 exercises)**
+## **Module 7: CREATE TABLE (15 exercises)**
 *Master database structure with Data Definition Language*
 
 ### **Exercise 31: Create Teams Table**
@@ -628,7 +628,7 @@ DROP TABLE Teams;
 
 ---
 
-## 🎯 **Learning Progression Summary**
+## **Learning Progression Summary**
 
 ### **Beginner Level (Exercises 1-15)**
 - Basic SELECT statements (Exercises 1-6)
@@ -646,7 +646,7 @@ DROP TABLE Teams;
 - Junction tables and many-to-many relationships
 - Data integrity and relationships
 
-## 💡 **SQL Best Practices Learned**
+## **SQL Best Practices Learned**
 
 1. **Always use WHERE clauses** with UPDATE and DELETE to avoid affecting all records
 2. **Test queries with SELECT first** before using UPDATE or DELETE
@@ -655,7 +655,7 @@ DROP TABLE Teams;
 5. **Plan your database structure** before creating tables
 6. **Use transactions** for complex operations (advanced topic)
 
-## 🚀 **Next Steps**
+## **Next Steps**
 
 After completing these exercises, students should be able to:
 - Write complex SELECT queries with multiple joins
