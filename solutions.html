@@ -47,7 +47,7 @@
       margin-right: auto;
     }
     h1, h2, h3, h4 { color: var(--text-primary); }
-    h1 { font-size: 2.2em; margin-bottom: 0.5em; }
+    h1 { font-size: 2.2em; margin-bottom: 0.5em; color: #ffe066; }
     h2 { 
       font-size: 1.5em; 
       margin-top: 2em; 
@@ -103,50 +103,80 @@
     ul, ol { margin-left: 2em; line-height: 1.8; }
     hr { border: none; border-top: 1px solid var(--border-color); margin: 2em 0; }
     b { color: var(--accent-color); }
+    
+    /* Accordion styles */
+    details {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin: 1em 0;
+      padding: 0;
+    }
+    summary {
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 1em 1.5em;
+      color: var(--accent-color);
+      user-select: none;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+    }
+    summary:hover {
+      background: var(--bg-primary);
+      border-bottom-color: var(--accent-color);
+    }
+    details[open] summary {
+      border-bottom: 2px solid var(--accent-color);
+      margin-bottom: 1em;
+    }
+    .module-content {
+      padding: 0 1.5em 1.5em 1.5em;
+    }
   </style>
 </head>
 <body>
   <h1>SQL Academy - Complete Solutions Guide</h1>
-  <h2>Module 1: SELECT (6 exercises)</h2>
-  <p class="goal">Master the art of querying data with SELECT statements</p>
-  <h3>Exercise 1: Basic SELECT</h3>
+  
+  <details>
+    <summary>Module 1: SELECT (6 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 1: Basic SELECT</h3>
   <p><b>Task:</b> Select all columns from the Heroes table to see all superheroes in the database.</p>
   <pre><code>SELECT * FROM Heroes;</code></pre>
-  <p class="goal">Basic SELECT syntax with wildcard (*)</p>
   <hr>
   <h3>Exercise 2: Filtering by Text</h3>
   <p><b>Task:</b> Select all heroes where the Universe is exactly 'Marvel'. Show all columns.</p>
   <pre><code>SELECT * FROM Heroes WHERE Universe = 'Marvel';</code></pre>
-  <p class="goal">WHERE clause with text filtering</p>
   <hr>
   <h3>Exercise 3: Filtering by Number Range</h3>
   <p><b>Task:</b> Select the HeroName and PowerLevel for all heroes where PowerLevel is greater than 90.</p>
   <pre><code>SELECT HeroName, PowerLevel FROM Heroes WHERE PowerLevel > 90;</code></pre>
-  <p class="goal">Specific column selection and numeric comparisons</p>
   <hr>
   <h3>Exercise 4: Ordering Results</h3>
   <p><b>Task:</b> Select HeroName and City from Heroes table, ordered alphabetically by HeroName (A to Z).</p>
   <pre><code>SELECT HeroName, City FROM Heroes ORDER BY HeroName ASC;</code></pre>
-  <p class="goal">ORDER BY clause for sorting results</p>
   <hr>
   <h3>Exercise 5: Date Range Query</h3>
   <p><b>Task:</b> Select HeroName and FirstAppearance for heroes who first appeared before 1950-01-01. These are the Golden Age heroes.</p>
   <pre><code>SELECT HeroName, FirstAppearance FROM Heroes WHERE FirstAppearance < '1950-01-01';</code></pre>
-  <p class="goal">Date comparisons and filtering</p>
   <hr>
   <h3>Exercise 6: Descending Order</h3>
   <p><b>Task:</b> Select VillainName and ThreatLevel from Villains table, ordered by ThreatLevel from highest to lowest (descending).</p>
   <pre><code>SELECT VillainName, ThreatLevel FROM Villains ORDER BY ThreatLevel DESC;</code></pre>
-  <p class="goal">Descending sort order</p>
   <hr>
-  <h2>Module 2: JOIN tables (4 exercises)</h2>
-  <p class="goal">Learn to combine data from multiple tables</p>
-  <h3>Exercise 7: Basic Two-Table Join</h3>
+    </div>
+  </details>
+  
+  <details>
+    <summary>Module 2: JOIN tables (4 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 7: Basic Two-Table Join</h3>
   <p><b>Task:</b> Show each hero's name along with their mission dates. Select HeroName from Heroes and MissionDate from Missions. Use WHERE to join Heroes.HeroID = Missions.HeroID.</p>
   <pre><code>SELECT Heroes.HeroName, Missions.MissionDate 
 FROM Heroes, Missions 
 WHERE Heroes.HeroID = Missions.HeroID;</code></pre>
-  <p class="goal">Basic implicit join syntax with WHERE clause</p>
   <hr>
   <h3>Exercise 8: Filtered Two-Table Join</h3>
   <p><b>Task:</b> Show hero names and villain names for completed missions only. Select HeroName from Heroes and VillainName from Villains, joining through Missions where Status = 'Completed'.</p>
@@ -155,7 +185,6 @@ FROM Heroes, Villains, Missions
 WHERE Heroes.HeroID = Missions.HeroID 
 AND Villains.VillainID = Missions.VillainID 
 AND Missions.Status = 'Completed';</code></pre>
-  <p class="goal">Three-table join with filtering conditions</p>
   <hr>
   <h3>Exercise 9: Hero Powers</h3>
   <p><b>Task:</b> Show each hero's name and their power names. Select HeroName from Heroes and PowerName from Powers, using the HeroPowers junction table to connect them.</p>
@@ -163,7 +192,6 @@ AND Missions.Status = 'Completed';</code></pre>
 FROM Heroes, Powers, HeroPowers 
 WHERE Heroes.HeroID = HeroPowers.HeroID 
 AND Powers.PowerID = HeroPowers.PowerID;</code></pre>
-  <p class="goal">Many-to-many relationships through junction tables</p>
   <hr>
   <h3>Exercise 10: Recent Missions</h3>
   <p><b>Task:</b> Show hero names and mission dates for missions that occurred after 2024-03-20. Order by mission date (newest first).</p>
@@ -172,18 +200,20 @@ FROM Heroes, Missions
 WHERE Heroes.HeroID = Missions.HeroID 
 AND Missions.MissionDate > '2024-03-20' 
 ORDER BY Missions.MissionDate DESC;</code></pre>
-  <p class="goal">Combining joins with date filtering and sorting</p>
   <hr>
-  <h2>Module 3: JOIN multiple tables (5 exercises)</h2>
-  <p class="goal">Master complex multi-table operations</p>
-  <h3>Exercise 11: Complete Mission Details</h3>
+    </div>
+  </details>
+  
+  <details>
+    <summary>Module 3: JOIN multiple tables (5 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 11: Complete Mission Details</h3>
   <p><b>Task:</b> Show HeroName, VillainName, and MissionDate for all completed missions. You'll need to join Heroes, Villains, and Missions tables.</p>
   <pre><code>SELECT Heroes.HeroName, Villains.VillainName, Missions.MissionDate 
 FROM Heroes, Villains, Missions 
 WHERE Heroes.HeroID = Missions.HeroID 
 AND Villains.VillainID = Missions.VillainID 
 AND Missions.Status = 'Completed';</code></pre>
-  <p class="goal">Complex three-table joins with filtering</p>
   <hr>
   <h3>Exercise 12: Power Analysis</h3>
   <p><b>Task:</b> Show HeroName, PowerName, and ProficiencyLevel for heroes with proficiency above 90. Join Heroes, Powers, and HeroPowers tables.</p>
@@ -192,7 +222,6 @@ FROM Heroes, Powers, HeroPowers
 WHERE Heroes.HeroID = HeroPowers.HeroID 
 AND Powers.PowerID = HeroPowers.PowerID 
 AND HeroPowers.ProficiencyLevel > 90;</code></pre>
-  <p class="goal">Junction table queries with numeric filtering</p>
   <hr>
   <h3>Exercise 13: Dangerous Power Users</h3>
   <p><b>Task:</b> Show HeroName, PowerName, and DangerLevel for powers with DangerLevel greater than 7. Order by DangerLevel descending.</p>
@@ -202,7 +231,6 @@ WHERE Heroes.HeroID = HeroPowers.HeroID
 AND Powers.PowerID = HeroPowers.PowerID 
 AND Powers.DangerLevel > 7 
 ORDER BY Powers.DangerLevel DESC;</code></pre>
-  <p class="goal">Multi-table joins with ordering by specific criteria</p>
   <hr>
   <h3>Exercise 14: Mission Difficulty Analysis</h3>
   <p><b>Task:</b> Show HeroName, VillainName, and Difficulty for all 'Hard' or 'Extreme' difficulty missions, ordered by hero name alphabetically.</p>
@@ -212,7 +240,6 @@ WHERE Heroes.HeroID = Missions.HeroID
 AND Villains.VillainID = Missions.VillainID 
 AND (Missions.Difficulty = 'Hard' OR Missions.Difficulty = 'Extreme') 
 ORDER BY Heroes.HeroName ASC;</code></pre>
-  <p class="goal">OR conditions and multiple criteria filtering</p>
   <hr>
   <h3>Exercise 15: Advanced Hero Analysis</h3>
   <p><b>Task:</b> Show HeroName, PowerName, and FirstAppearance for Marvel heroes who have Reality-type powers. Order by PowerName alphabetically.</p>
@@ -223,97 +250,97 @@ AND Powers.PowerID = HeroPowers.PowerID
 AND Heroes.Universe = 'Marvel' 
 AND Powers.PowerType = 'Reality' 
 ORDER BY Powers.PowerName ASC;</code></pre>
-  <p class="goal">Complex filtering across multiple tables with multiple conditions</p>
   <hr>
-  <h2>Module 4: INSERT INTO (5 exercises)</h2>
-  <p class="goal">Learn to add new data to your database</p>
-  <h3>Exercise 16: Add New Hero</h3>
+    </div>
+  </details>
+  
+  <details>
+    <summary>Module 4: INSERT INTO (5 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 16: Add New Hero</h3>
   <p><b>Task:</b> Insert a new hero named 'Deadpool' with real name 'Wade Wilson', city 'New York', universe 'Marvel', power level 75, and first appearance '1991-02-01'.</p>
   <pre><code>INSERT INTO Heroes (HeroID, HeroName, RealName, City, Universe, PowerLevel, FirstAppearance) 
 VALUES (11, 'Deadpool', 'Wade Wilson', 'New York', 'Marvel', 75, '1991-02-01');</code></pre>
-  <p class="goal">Basic INSERT syntax with all columns specified</p>
   <hr>
   <h3>Exercise 17: Create New Power</h3>
   <p><b>Task:</b> Insert a new power called 'Regeneration' with power type 'Physical', energy required 20, danger level 3, and creation date '1991-02-01'.</p>
   <pre><code>INSERT INTO Powers (PowerID, PowerName, PowerType, EnergyRequired, DangerLevel, CreationDate) 
 VALUES (11, 'Regeneration', 'Physical', 20, 3, '1991-02-01');</code></pre>
-  <p class="goal">INSERT with different data types (text, integer, date)</p>
   <hr>
   <h3>Exercise 18: Create New Villain</h3>
   <p><b>Task:</b> Insert a new villain named 'Venom' with real name 'Eddie Brock', city 'New York', threat level 7, and last seen '2024-05-01'.</p>
   <pre><code>INSERT INTO Villains (VillainID, VillainName, RealName, City, ThreatLevel, LastSeen) 
 VALUES (211, 'Venom', 'Eddie Brock', 'New York', 7, '2024-05-01');</code></pre>
-  <p class="goal">INSERT into different table structures</p>
   <hr>
   <h3>Exercise 19: Assign Power to Hero</h3>
   <p><b>Task:</b> Give Deadpool (HeroID 11) the Regeneration power (PowerID 11) with proficiency level 95 and 10 years of training. Insert into HeroPowers table.</p>
   <pre><code>INSERT INTO HeroPowers (HeroID, PowerID, ProficiencyLevel, YearsTraining) 
 VALUES (11, 11, 95, 10);</code></pre>
-  <p class="goal">Working with junction tables and foreign key relationships</p>
   <hr>
   <h3>Exercise 20: Create Mission</h3>
   <p><b>Task:</b> Create a new mission with ID 1011 where Deadpool (HeroID 11) fights Venom (VillainID 211) on '2024-05-15' with 'Medium' difficulty and 'In Progress' status.</p>
   <pre><code>INSERT INTO Missions (MissionID, HeroID, VillainID, MissionDate, Difficulty, Status) 
 VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
-  <p class="goal">Creating records that reference other tables via foreign keys</p>
   <hr>
-  <h2>Module 5: UPDATE (5 exercises)</h2>
-  <p class="goal">Master the art of modifying existing data</p>
-  <h3>Exercise 21: Power Level Boost</h3>
+    </div>
+  </details>
+  
+  <details>
+    <summary>Module 5: UPDATE (5 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 21: Power Level Boost</h3>
   <p><b>Task:</b> Update Spider-Man's power level to 90. Use UPDATE statement with WHERE clause to target the specific hero by name.</p>
   <pre><code>UPDATE Heroes SET PowerLevel = 90 WHERE HeroName = 'Spider-Man';</code></pre>
-  <p class="goal">Basic UPDATE syntax with WHERE condition</p>
   <hr>
   <h3>Exercise 22: Mission Status Update</h3>
   <p><b>Task:</b> Update the mission with ID 1004 to change its status from 'In Progress' to 'Completed'.</p>
   <pre><code>UPDATE Missions SET Status = 'Completed' WHERE MissionID = 1004;</code></pre>
-  <p class="goal">Updating specific records using primary key</p>
   <hr>
   <h3>Exercise 23: Villain Activity Update</h3>
   <p><b>Task:</b> Update the Joker's last seen date to '2024-10-01' to reflect recent criminal activity.</p>
   <pre><code>UPDATE Villains SET LastSeen = '2024-10-01' WHERE VillainName = 'Joker';</code></pre>
-  <p class="goal">Updating date fields with text-based WHERE conditions</p>
   <hr>
   <h3>Exercise 24: Multiple Field Update</h3>
   <p><b>Task:</b> Update Iron Man to increase his power level to 95 AND change his city to 'Los Angeles'. Use a single UPDATE statement.</p>
   <pre><code>UPDATE Heroes SET PowerLevel = 95, City = 'Los Angeles' WHERE HeroName = 'Iron Man';</code></pre>
-  <p class="goal">Updating multiple columns in a single statement</p>
   <hr>
   <h3>Exercise 25: Conditional Power Update</h3>
   <p><b>Task:</b> Update all powers with danger level greater than 8 to increase their energy required by 10. This affects multiple records with one UPDATE.</p>
   <pre><code>UPDATE Powers SET EnergyRequired = EnergyRequired + 10 WHERE DangerLevel > 8;</code></pre>
-  <p class="goal">Bulk updates affecting multiple records, arithmetic in UPDATE</p>
   <hr>
-  <h2>Module 6: DELETE (5 exercises)</h2>
-  <p class="goal">Learn to safely remove unwanted data</p>
-  <h3>Exercise 26: Remove Failed Mission</h3>
+    </div>
+  </details>
+  
+  <details>
+    <summary>Module 6: DELETE (5 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 26: Remove Failed Mission</h3>
   <p><b>Task:</b> Delete the mission with status 'Failed' from the Missions table. Use WHERE clause to target only failed missions.</p>
   <pre><code>DELETE FROM Missions WHERE Status = 'Failed';</code></pre>
-  <p class="goal">Basic DELETE syntax with WHERE condition</p>
   <hr>
   <h3>Exercise 27: Remove Low-Threat Villain</h3>
   <p><b>Task:</b> Delete the villain 'Taskmaster' from the Villains table. Target by villain name.</p>
   <pre><code>DELETE FROM Villains WHERE VillainName = 'Taskmaster';</code></pre>
-  <p class="goal">DELETE using text-based WHERE conditions</p>
   <hr>
   <h3>Exercise 28: Remove Hero Power</h3>
   <p><b>Task:</b> Remove the power relationship between Iron Man (HeroID 4) and Flight (PowerID 3) from the HeroPowers table. Use both HeroID and PowerID in WHERE clause.</p>
   <pre><code>DELETE FROM HeroPowers WHERE HeroID = 4 AND PowerID = 3;</code></pre>
-  <p class="goal">DELETE with multiple WHERE conditions (AND operator)</p>
   <hr>
   <h3>Exercise 29: Delete Old Missions</h3>
   <p><b>Task:</b> Delete all missions that occurred before '2024-03-20' from the Missions table. Use date comparison in WHERE clause.</p>
   <pre><code>DELETE FROM Missions WHERE MissionDate < '2024-03-20';</code></pre>
-  <p class="goal">Bulk DELETE operations with date comparisons</p>
   <hr>
   <h3>Exercise 30: Remove Low-Power Heroes</h3>
   <p><b>Task:</b> Delete all heroes with power level less than 85 from the Heroes table. This will affect multiple records - be careful with your WHERE clause!</p>
   <pre><code>DELETE FROM Heroes WHERE PowerLevel < 85;</code></pre>
-  <p class="goal">Bulk DELETE with numeric conditions (affects multiple records)</p>
   <hr>
-  <h2>Module 7: CREATE TABLE (15 exercises)</h2>
-  <p class="goal">Master database structure with Data Definition Language</p>
-  <h3>Exercise 31: Create Teams Table</h3>
+    </div>
+  </details>
+  
+  <details>
+    <summary>Module 7: CREATE TABLE (15 exercises)</summary>
+    <div class="module-content">
+      <h3>Exercise 31: Create Teams Table</h3>
   <p><b>Task:</b> Create a new table called 'Teams' with columns: TeamID (INTEGER PRIMARY KEY), TeamName (TEXT NOT NULL), LeaderID (INTEGER), and City (TEXT).</p>
   <pre><code>CREATE TABLE Teams (
     TeamID INTEGER PRIMARY KEY,
@@ -321,7 +348,6 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
     LeaderID INTEGER,
     City TEXT
 );</code></pre>
-  <p class="goal">CREATE TABLE syntax with different column types and constraints</p>
   <hr>
   <h3>Exercise 32: Populate Teams Table</h3>
   <p><b>Task:</b> Insert three teams into the Teams table: (1, 'Avengers', 7, 'New York'), (2, 'Justice League', 7, 'Washington DC'), and (3, 'X-Men', 10, 'New York').</p>
@@ -329,29 +355,24 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
 (1, 'Avengers', 7, 'New York'),
 (2, 'Justice League', 7, 'Washington DC'),
 (3, 'X-Men', 10, 'New York');</code></pre>
-  <p class="goal">Multiple INSERT statements, populating a new table</p>
   <hr>
   <h3>Exercise 33: Add More Teams</h3>
   <p><b>Task:</b> Insert two more teams: (4, 'Fantastic Four', 4, 'New York') and (5, 'Teen Titans', 3, 'Jump City').</p>
   <pre><code>INSERT INTO Teams (TeamID, TeamName, LeaderID, City) VALUES 
 (4, 'Fantastic Four', 4, 'New York'),
 (5, 'Teen Titans', 3, 'Jump City');</code></pre>
-  <p class="goal">Continuing to populate tables with additional records</p>
   <hr>
   <h3>Exercise 34: Correct Team Leader</h3>
   <p><b>Task:</b> There's an error! Justice League should be led by Superman (HeroID 7), but Avengers should be led by Iron Man (HeroID 4). Update the Avengers record to fix this mistake.</p>
   <pre><code>UPDATE Teams SET LeaderID = 4 WHERE TeamName = 'Avengers';</code></pre>
-  <p class="goal">Data correction using UPDATE on newly created tables</p>
   <hr>
   <h3>Exercise 35: Update Team Location</h3>
   <p><b>Task:</b> The Teen Titans have moved! Update their city from 'Jump City' to 'San Francisco' to reflect their new headquarters location.</p>
   <pre><code>UPDATE Teams SET City = 'San Francisco' WHERE TeamName = 'Teen Titans';</code></pre>
-  <p class="goal">Updating records in custom tables</p>
   <hr>
   <h3>Exercise 36: Add Column to Teams</h3>
   <p><b>Task:</b> Add a new column called 'Founded' with data type TEXT to the Teams table to track when each team was established.</p>
   <pre><code>ALTER TABLE Teams ADD COLUMN Founded TEXT;</code></pre>
-  <p class="goal">ALTER TABLE to add new columns to existing tables</p>
   <hr>
   <h3>Exercise 37: Update Founded Dates</h3>
   <p><b>Task:</b> Update the Teams table to set founding dates: Avengers = '1963-09-01', Justice League = '1960-03-01', X-Men = '1963-09-01', Fantastic Four = '1961-11-01', Teen Titans = '1964-07-01'.</p>
@@ -360,12 +381,10 @@ UPDATE Teams SET Founded = '1960-03-01' WHERE TeamName = 'Justice League';
 UPDATE Teams SET Founded = '1963-09-01' WHERE TeamName = 'X-Men';
 UPDATE Teams SET Founded = '1961-11-01' WHERE TeamName = 'Fantastic Four';
 UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';</code></pre>
-  <p class="goal">Multiple UPDATE statements to populate new columns</p>
   <hr>
   <h3>Exercise 38: Remove Disbanded Team</h3>
   <p><b>Task:</b> Unfortunately, the Fantastic Four has disbanded. Delete their record from the Teams table.</p>
   <pre><code>DELETE FROM Teams WHERE TeamName = 'Fantastic Four';</code></pre>
-  <p class="goal">DELETE operations on custom tables</p>
   <hr>
   <h3>Exercise 39: Create Team Members Junction Table</h3>
   <p><b>Task:</b> Create a new table called 'TeamMembers' to link heroes to teams. Columns: HeroID (INTEGER), TeamID (INTEGER), JoinDate (TEXT), Role (TEXT). This creates a many-to-many relationship.</p>
@@ -375,7 +394,6 @@ UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';</code></
     JoinDate TEXT,
     Role TEXT
 );</code></pre>
-  <p class="goal">Creating junction tables for many-to-many relationships</p>
   <hr>
   <h3>Exercise 40: Add Heroes to Avengers</h3>
   <p><b>Task:</b> Add Spider-Man (HeroID 1), Iron Man (HeroID 4), and Captain America (HeroID 8) to the Avengers team (TeamID 1). Set join dates to '2024-01-01' and roles to 'Member'.</p>
@@ -383,7 +401,6 @@ UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';</code></
 (1, 1, '2024-01-01', 'Member'),
 (4, 1, '2024-01-01', 'Member'),
 (8, 1, '2024-01-01', 'Member');</code></pre>
-  <p class="goal">Populating junction tables with relationship data</p>
   <hr>
   <h3>Exercise 41: Add Heroes to Justice League</h3>
   <p><b>Task:</b> Add Superman (HeroID 7), Batman (HeroID 2), and Wonder Woman (HeroID 3) to Justice League (TeamID 2). Set join dates to '2024-02-01' and roles to 'Member'.</p>
@@ -391,7 +408,6 @@ UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';</code></
 (7, 2, '2024-02-01', 'Member'),
 (2, 2, '2024-02-01', 'Member'),
 (3, 2, '2024-02-01', 'Member');</code></pre>
-  <p class="goal">Additional practice with junction table inserts</p>
   <hr>
   <h3>Exercise 42: Query Team Rosters</h3>
   <p><b>Task:</b> Show team names with their member hero names. Use a three-table join connecting Teams, Heroes, and TeamMembers to display which heroes belong to which teams.</p>
@@ -399,19 +415,19 @@ UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';</code></
 FROM Teams, Heroes, TeamMembers 
 WHERE Teams.TeamID = TeamMembers.TeamID 
 AND Heroes.HeroID = TeamMembers.HeroID;</code></pre>
-  <p class="goal">Three-table joins using junction tables</p>
   <hr>
   <h3>Exercise 43: Remove Team Member</h3>
   <p><b>Task:</b> Spider-Man is leaving the Avengers! Delete the record from TeamMembers where HeroID = 1 AND TeamID = 1.</p>
   <pre><code>DELETE FROM TeamMembers WHERE HeroID = 1 AND TeamID = 1;</code></pre>
-  <p class="goal">Deleting specific relationships from junction tables</p>
   <hr>
   <h3>Exercise 44: Clean Up All Tables</h3>
   <p><b>Task:</b> Clean up the database by removing both the TeamMembers and Teams tables using DROP TABLE statements.</p>
   <pre><code>DROP TABLE TeamMembers;
 DROP TABLE Teams;</code></pre>
-  <p class="goal">Proper cleanup order when dropping related tables</p>
   <hr>
+    </div>
+  </details>
+  
   <p class="quote">"With great SQL power comes great responsibility!" - Uncle Ben (probably)</p>
 </body>
 </html>
