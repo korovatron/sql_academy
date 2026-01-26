@@ -3,6 +3,8 @@ class SQLPracticeApp {
         this.dbManager = new DatabaseManager();
         this.sqlEditor = null; // CodeMirror editor instance
         this.progressTracker = new ExerciseProgressTracker();
+        this.lastActiveUserEvent = 0; // Track last active user event timestamp
+        this.activeUserThrottle = 30000; // 30 seconds throttle for active user events
         this.initializeApp();
     }
 
@@ -55,6 +57,9 @@ class SQLPracticeApp {
             if (change.text[0].match(/[a-zA-Z]/)) {
                 CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
             }
+            
+            // Track active user typing with throttling
+            this.trackActiveUser();
         });
         
         // Handle autocomplete selections - capitalize keywords when selected
@@ -473,6 +478,23 @@ class SQLPracticeApp {
                     messageDiv.remove();
                 }
             }, 5000);
+        }
+    }
+
+    trackActiveUser() {
+        // Throttle active user events to avoid overwhelming Google Analytics
+        const now = Date.now();
+        if (now - this.lastActiveUserEvent >= this.activeUserThrottle) {
+            this.lastActiveUserEvent = now;
+            
+            // Send event to Google Analytics if gtag is available
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'active_typing', {
+                    'event_category': 'engagement',
+                    'event_label': 'query_editor',
+                    'non_interaction': true
+                });
+            }
         }
     }
 
