@@ -489,7 +489,7 @@ class SQLPracticeApp {
             
             // Send event to Google Analytics if gtag is available
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'active_typing', {
+                gtag('event', 'SQL_active_typing', {
                     'event_category': 'engagement',
                     'event_label': 'query_editor',
                     'non_interaction': true
