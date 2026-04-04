@@ -2,6 +2,7 @@ class SQLPracticeApp {
     constructor() {
         this.dbManager = new DatabaseManager();
         this.sqlEditor = null; // CodeMirror editor instance
+        this.isMobileDevice = false;
         this.progressTracker = new ExerciseProgressTracker();
         this.initializeApp();
     }
@@ -22,6 +23,7 @@ class SQLPracticeApp {
             // Initialize schema display
             const schema = this.dbManager.getSchemaInfo();
             this.updateSchemaDisplay(schema);
+            this.focusEditorOnLoad();
         } catch (error) {
             this.showLoading(false);
             this.displayMessage(`Failed to initialize database: ${error.message}`, 'error');
@@ -33,11 +35,12 @@ class SQLPracticeApp {
         
         // Detect mobile/touch devices
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        this.isMobileDevice = isMobile;
         
         this.sqlEditor = CodeMirror.fromTextArea(textarea, {
             mode: 'text/x-sql',
             theme: document.body.classList.contains('dark-theme') ? 'dracula' : 'default',
-            lineNumbers: !isMobile, // Hide line numbers on mobile for more space
+            lineNumbers: false,
             matchBrackets: true,
             indentUnit: 2,
             smartIndent: true,
@@ -100,6 +103,16 @@ class SQLPracticeApp {
                 });
             }
         }
+    }
+
+    focusEditorOnLoad() {
+        if (!this.sqlEditor || this.isMobileDevice) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            this.sqlEditor.focus();
+        });
     }
 
     autoCapitalizeFromAutocomplete() {
