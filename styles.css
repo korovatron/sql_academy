@@ -394,8 +394,12 @@ header {
 .schema-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     margin-bottom: 15px;
+}
+
+.schema-header h2 {
+    margin: 0;
 }
 
 .schema-actions {
