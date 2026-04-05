@@ -624,7 +624,7 @@ class SQLPracticeApp {
 
             return `
                 <g>
-                    <rect class="schema-diagram-table" x="${table.x}" y="${table.y}" width="${table.width}" height="${table.height}"></rect>
+                    <rect class="schema-diagram-table" x="${table.x}" y="${table.y}" width="${table.width}" height="${table.height}" rx="8" ry="8"></rect>
                     <rect class="schema-diagram-table-header" x="${table.x}" y="${table.y}" width="${table.width}" height="${table.headerHeight}" rx="8" ry="8"></rect>
                     <text class="schema-diagram-table-title" x="${table.x + 10}" y="${table.y + 19}">${this.escapeHtml(table.name)}</text>
                     ${rows}
