@@ -263,7 +263,9 @@ class SQLPracticeApp {
 
         // Reset database button
         document.getElementById('resetDbBtn').addEventListener('click', () => {
-            this.resetDatabase();
+            if (confirm('Are you sure you want to reset the database? This cannot be undone.')) {
+                this.resetDatabase();
+            }
         });
 
         // Theme toggle button
@@ -944,6 +946,7 @@ class SQLPracticeApp {
         const resultsDiv = document.getElementById('results');
         
         if (!results || results.length === 0) {
+            resultsDiv.classList.add('results-empty');
             resultsDiv.innerHTML = '<p>Query executed successfully. No results to display.</p>';
             return;
         }
@@ -974,7 +977,10 @@ class SQLPracticeApp {
         });
         
         if (!html) {
+            resultsDiv.classList.add('results-empty');
             html = '<p>Query executed successfully. No results to display.</p>';
+        } else {
+            resultsDiv.classList.remove('results-empty');
         }
         
         resultsDiv.innerHTML = html;
@@ -982,6 +988,7 @@ class SQLPracticeApp {
 
     displayMessage(message, type) {
         const resultsDiv = document.getElementById('results');
+        resultsDiv.classList.remove('results-empty');
         const messageDiv = document.createElement('div');
         messageDiv.className = type;
         messageDiv.textContent = message;
@@ -1067,7 +1074,9 @@ class SQLPracticeApp {
     }
 
     clearResults() {
-        document.getElementById('results').innerHTML = '';
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.innerHTML = '';
+        resultsDiv.classList.add('results-empty');
     }
 
     resetDatabase() {
@@ -1161,14 +1170,20 @@ class SQLPracticeApp {
     }
 
     updateThemeIcon(isDark) {
-        const themeIcon = document.querySelector('.theme-icon');
+        const lightIcon = document.getElementById('light-icon');
+        const darkIcon = document.getElementById('dark-icon');
         const themeButton = document.getElementById('themeToggle');
+        if (!lightIcon || !darkIcon || !themeButton) {
+            return;
+        }
         
         if (isDark) {
-            themeIcon.textContent = '☀️';
+            darkIcon.classList.add('theme-active');
+            lightIcon.classList.remove('theme-active');
             themeButton.setAttribute('aria-label', 'Switch to light mode');
         } else {
-            themeIcon.textContent = '🌙';
+            lightIcon.classList.add('theme-active');
+            darkIcon.classList.remove('theme-active');
             themeButton.setAttribute('aria-label', 'Switch to dark mode');
         }
     }
@@ -1430,7 +1445,16 @@ class ExerciseProgressTracker {
             const resetButton = document.createElement('button');
             resetButton.id = 'reset-progress-btn';
             resetButton.className = 'reset-progress-btn-small';
-            resetButton.innerHTML = '🔄';
+            resetButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-0.5 -0.5 16 16" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" id="Refresh--Streamline-Mynaui" height="16" width="16" aria-hidden="true" focusable="false">
+                    <desc>
+                        Refresh Streamline Icon: https://streamlinehq.com
+                    </desc>
+                    <path d="M12.8125 5c-0.8699999999999999 -1.986875 -3.0143750000000002 -3.125 -5.32625 -3.125C4.561875000000001 1.875 2.158125 4.095 1.875 6.9375" stroke-width="1"></path>
+                    <path d="M10.305625000000001 5.25h2.48125a0.3375 0.3375 0 0 0 0.3375 -0.3375V2.4375M2.1875 10c0.8699999999999999 1.986875 3.0143750000000002 3.125 5.32625 3.125 2.9243750000000004 0 5.328125 -2.22 5.61125 -5.0625" stroke-width="1"></path>
+                    <path d="M4.694375 9.75h-2.48125a0.3375 0.3375 0 0 0 -0.338125 0.3375v2.475" stroke-width="1"></path>
+                </svg>
+            `;
             resetButton.title = 'Reset all progress';
             
             // Replace h2 content

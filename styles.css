@@ -191,14 +191,15 @@ header {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2em;
+    gap: 8px;
+    font-size: 1em;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
 }
@@ -206,15 +207,24 @@ header {
 .theme-toggle-btn:hover {
     background: rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.5);
-    transform: scale(1.05);
+    transform: translateY(-1px);
 }
 
 .theme-icon {
-    transition: transform 0.3s ease;
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.45);
+    transition: color 0.2s ease;
 }
 
-.theme-toggle-btn:hover .theme-icon {
-    transform: rotate(180deg);
+.theme-icon.theme-active {
+    color: #ffffff;
+}
+
+.theme-divider {
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 600;
+    line-height: 1;
 }
 
 .main-content {
@@ -423,18 +433,21 @@ header {
 
 .schema-diagram-btn {
     border: 1px solid var(--border-light);
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     color: var(--text-primary);
-    border-radius: 6px;
+    border-radius: 8px;
+    min-height: 34px;
     padding: 6px 12px;
     font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .schema-diagram-btn:hover {
     background: var(--bg-accent);
-    border-color: #667eea;
+    border-color: var(--border-light);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 .schema-diagram-btn:focus-visible {
@@ -1010,22 +1023,47 @@ body.modal-open {
 .editor-controls {
     margin-top: 15px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
-    flex-wrap: wrap;
+}
+
+.editor-controls-left,
+.editor-controls-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.editor-controls-right {
+    margin-left: auto;
 }
 
 .editor-controls button {
-    padding: 12px 20px;
+    padding: 10px 14px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.3s ease;
     min-height: 44px; /* iOS minimum touch target */
-    flex: 1;
-    min-width: 120px;
+    min-width: 0;
     background: var(--bg-secondary);
     color: var(--text-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.editor-controls .btn-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.editor-controls .btn-label {
+    line-height: 1;
 }
 
 #executeBtn {
@@ -1033,6 +1071,7 @@ body.modal-open {
     border-color: #5a6fd8;
     color: white;
     font-weight: 600;
+    min-width: 122px;
 }
 
 #executeBtn:hover {
@@ -1087,12 +1126,17 @@ body.modal-open {
     background: var(--bg-tertiary);
     border-radius: 8px;
     padding: 15px;
-    min-height: 200px;
+    min-height: 0;
     max-height: min(62vh, 780px);
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border-color) var(--bg-tertiary);
     transition: background-color 0.3s ease;
+}
+
+#results.results-empty {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #results::-webkit-scrollbar {
@@ -1226,9 +1270,10 @@ footer {
     }
     
     .theme-toggle-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1em;
+        min-height: 40px;
+        padding: 7px 10px;
+        font-size: 1em;
+        gap: 7px;
     }
     
     /* Footer responsive layout */
@@ -1275,6 +1320,16 @@ footer {
     .editor-controls {
         flex-direction: column;
         gap: 8px;
+        align-items: stretch;
+    }
+
+    .editor-controls-left,
+    .editor-controls-right {
+        width: 100%;
+    }
+
+    .editor-controls-right {
+        margin-left: 0;
     }
     
     .editor-controls button {
@@ -1390,6 +1445,11 @@ footer {
         padding: 12px 15px;
         min-height: 45px;
     }
+
+    .editor-controls .btn-icon {
+        width: 13px;
+        height: 13px;
+    }
     
     .result-table th,
     .result-table td {
@@ -1494,9 +1554,9 @@ footer {
 }
 
 .reset-progress-btn-small {
-    background: var(--bg-accent);
+    background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 6px 8px;
     color: var(--text-primary);
     cursor: pointer;
@@ -1510,13 +1570,14 @@ footer {
 }
 
 .reset-progress-btn-small:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-accent);
     border-color: var(--border-light);
-    transform: scale(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 .reset-progress-btn-small:active {
-    transform: scale(0.95);
+    transform: translateY(0);
 }
 
 /* Module progress indicators */
@@ -1719,7 +1780,7 @@ footer {
 
 /* Dark theme progress adjustments */
 .dark-theme .reset-progress-btn-small {
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     border-color: var(--border-color);
 }
 

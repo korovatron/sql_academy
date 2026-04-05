@@ -288,9 +288,31 @@
                               placeholder="Enter your SQL query here...
 Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
                     <div class="editor-controls">
-                        <button id="executeBtn">Execute Query</button>
-                        <button id="clearBtn">Clear</button>
-                        <button id="resetDbBtn">Reset Database</button>
+                        <div class="editor-controls-left">
+                            <button id="clearBtn" aria-label="Clear query editor" title="Clear query editor and results">
+                                <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                <span class="btn-label">Clear</span>
+                            </button>
+                            <button id="resetDbBtn" aria-label="Reset database" title="Reset database to its original state">
+                                <svg class="btn-icon" width="14" height="14" viewBox="-0.5 -0.5 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path d="M12.8125 5c-0.8699999999999999 -1.986875 -3.0143750000000002 -3.125 -5.32625 -3.125C4.561875000000001 1.875 2.158125 4.095 1.875 6.9375" stroke-width="1"></path>
+                                    <path d="M10.305625000000001 5.25h2.48125a0.3375 0.3375 0 0 0 0.3375 -0.3375V2.4375M2.1875 10c0.8699999999999999 1.986875 3.0143750000000002 3.125 5.32625 3.125 2.9243750000000004 0 5.328125 -2.22 5.61125 -5.0625" stroke-width="1"></path>
+                                    <path d="M4.694375 9.75h-2.48125a0.3375 0.3375 0 0 0 -0.338125 0.3375v2.475" stroke-width="1"></path>
+                                </svg>
+                                <span class="btn-label">Reset DB</span>
+                            </button>
+                        </div>
+                        <div class="editor-controls-right">
+                            <button id="executeBtn" aria-label="Execute query" title="Execute SQL query (Ctrl+Enter)">
+                                <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                                    <path d="M8 5v14l11-7z"></path>
+                                </svg>
+                                <span class="btn-label">Execute</span>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
@@ -300,7 +322,7 @@ Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
                         <div class="spinner"></div>
                         <span>Loading database...</span>
                     </div>
-                    <div id="results"></div>
+                    <div id="results" class="results-empty"></div>
                 </section>
             </section>
         </main>
@@ -320,7 +342,21 @@ Example: SELECT * FROM Heroes WHERE PowerLevel > 90;"></textarea>
             <p>&copy; 2025 Neil Kendall. More @ <a href="https://www.korovatron.co.uk/" rel="noopener noreferrer" class="plain-link">www.korovatron.co.uk</a></p>
             <div class="theme-toggle">
                 <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode">
-                    <span class="theme-icon">☀️</span>
+                    <svg id="light-icon" class="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span class="theme-divider" aria-hidden="true">|</span>
+                    <svg id="dark-icon" class="theme-icon theme-active" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
                 </button>
             </div>
         </footer>
