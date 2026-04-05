@@ -1446,7 +1446,7 @@ class ExerciseProgressTracker {
             resetButton.id = 'reset-progress-btn';
             resetButton.className = 'reset-progress-btn-small';
             resetButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-0.5 -0.5 16 16" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" id="Refresh--Streamline-Mynaui" height="16" width="16" aria-hidden="true" focusable="false">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-0.5 -0.5 16 16" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" id="Refresh--Streamline-Mynaui" height="18" width="18" aria-hidden="true" focusable="false">
                     <desc>
                         Refresh Streamline Icon: https://streamlinehq.com
                     </desc>

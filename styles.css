@@ -1062,6 +1062,21 @@ body.modal-open {
     flex-shrink: 0;
 }
 
+#resetDbBtn .btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+#clearBtn .btn-icon {
+    width: 18px;
+    height: 18px;
+}
+
+#executeBtn .btn-icon {
+    width: 26px;
+    height: 26px;
+}
+
 .editor-controls .btn-label {
     line-height: 1;
 }
