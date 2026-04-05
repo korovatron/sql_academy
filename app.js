@@ -560,21 +560,14 @@ class SQLPracticeApp {
             const edgeColor = connectorPalette[edge.colorIndex % connectorPalette.length];
             const startDirection = edge.startSide === 'right' ? 1 : -1;
             const endDirection = edge.endSide === 'right' ? 1 : -1;
-            const manyLabelX = edge.startX + (startDirection * 14);
-            const manyLabelY = edge.startY - 3;
-            const oneLabelX = edge.endX + (endDirection === 1 ? 4 : -12);
-            const oneLabelY = edge.endY - 6;
             const crowFootJoinX = edge.startX + (startDirection * 10);
-            const oneTickStartX = edge.endX + (endDirection * 4);
-            const oneTickEndX = edge.endX + (endDirection * 10);
+            const oneTickX = edge.endX + (endDirection * 7);
             return `
                 <g>
                     <path class="schema-diagram-edge" d="${edge.pathData}" fill="none" style="stroke: ${edgeColor};"></path>
                     <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY - 7} L ${crowFootJoinX} ${edge.startY}" style="stroke: ${edgeColor};"></path>
                     <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY + 7} L ${crowFootJoinX} ${edge.startY}" style="stroke: ${edgeColor};"></path>
-                    <path class="schema-diagram-one-tick" d="M ${oneTickStartX} ${edge.endY - 6} L ${oneTickEndX} ${edge.endY + 6}" style="stroke: ${edgeColor};"></path>
-                    <text class="schema-diagram-cardinality many" x="${manyLabelX}" y="${manyLabelY}" style="fill: ${edgeColor};">&#8734;</text>
-                    <text class="schema-diagram-cardinality one" x="${oneLabelX}" y="${oneLabelY}" style="fill: ${edgeColor};">1</text>
+                    <path class="schema-diagram-one-tick" d="M ${oneTickX} ${edge.endY - 6} L ${oneTickX} ${edge.endY + 6}" style="stroke: ${edgeColor};"></path>
                 </g>
             `;
         }).join('');
