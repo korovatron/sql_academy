@@ -398,6 +398,33 @@ header {
     margin-bottom: 15px;
 }
 
+.schema-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.schema-diagram-btn {
+    border: 1px solid var(--border-light);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.schema-diagram-btn:hover {
+    background: var(--bg-accent);
+    border-color: #667eea;
+}
+
+.schema-diagram-btn:focus-visible {
+    outline: 2px solid var(--focus-accent);
+    outline-offset: 2px;
+}
+
 .schema-toggle-btn {
     background: none;
     border: none;
@@ -448,6 +475,209 @@ header {
     .schema-container {
         max-height: 200px;
     }
+
+    .schema-diagram-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+.schema-diagram-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.schema-diagram-modal[hidden] {
+    display: none;
+}
+
+.schema-diagram-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.schema-diagram-dialog {
+    position: relative;
+    width: min(1500px, 99vw);
+    max-height: 96vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+}
+
+.schema-diagram-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.schema-diagram-dialog-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.schema-diagram-close {
+    border: 1px solid var(--border-light);
+    background: transparent;
+    color: var(--text-primary);
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.schema-diagram-close:hover {
+    background: var(--bg-accent);
+}
+
+.schema-diagram-close:focus-visible {
+    outline: 2px solid var(--focus-accent);
+    outline-offset: 2px;
+}
+
+.schema-diagram-help {
+    margin: 0;
+    padding: 10px 16px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.88rem;
+}
+
+.schema-diagram-canvas {
+    overflow: auto;
+    padding: 12px;
+    background: var(--bg-tertiary);
+    min-height: 60vh;
+}
+
+@media (max-width: 768px) {
+    .schema-diagram-modal {
+        padding: 4px;
+    }
+
+    .schema-diagram-dialog {
+        width: 100vw;
+        max-height: 98vh;
+        border-radius: 10px;
+    }
+
+    .schema-diagram-canvas {
+        min-height: 62vh;
+    }
+}
+
+.schema-diagram-empty {
+    padding: 28px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.schema-diagram-svg {
+    width: 100%;
+    min-width: 760px;
+    display: block;
+}
+
+.schema-diagram-edge {
+    stroke: #2d8a82;
+    stroke-width: 2;
+}
+
+.schema-diagram-crow-foot {
+    stroke: #2d8a82;
+    stroke-width: 2;
+}
+
+.schema-diagram-one-tick {
+    stroke: #2d8a82;
+    stroke-width: 2;
+}
+
+.schema-diagram-edge-label {
+    fill: var(--text-muted);
+    font-size: 11px;
+}
+
+.schema-diagram-cardinality {
+    fill: #2d8a82;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.schema-diagram-cardinality.many {
+    font-size: 16px;
+    font-weight: 600;
+    text-anchor: middle;
+}
+
+.dark-theme .schema-diagram-edge,
+.dark-theme .schema-diagram-crow-foot,
+.dark-theme .schema-diagram-one-tick {
+    stroke: #5fd4c8;
+    fill: none;
+}
+
+.dark-theme .schema-diagram-cardinality {
+    fill: #5fd4c8;
+}
+
+.schema-diagram-table {
+    fill: var(--bg-secondary);
+    stroke: #667eea;
+    stroke-width: 2;
+    rx: 8;
+    ry: 8;
+}
+
+.schema-diagram-table-header {
+    fill: #667eea;
+}
+
+.schema-diagram-table-title {
+    fill: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.schema-diagram-column-name {
+    fill: var(--text-primary);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.schema-diagram-key-badge.pk {
+    fill: #ff6b6b;
+}
+
+.schema-diagram-key-badge.fk {
+    fill: #2d8a82;
+}
+
+.schema-diagram-key-badge-text {
+    fill: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    text-anchor: middle;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 .table-info {

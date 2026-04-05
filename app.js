@@ -4,6 +4,9 @@ class SQLPracticeApp {
         this.sqlEditor = null; // CodeMirror editor instance
         this.isMobileDevice = false;
         this.progressTracker = new ExerciseProgressTracker();
+        this.currentSchema = [];
+        this.isSchemaModalOpen = false;
+        this.lastFocusedBeforeModal = null;
         this.initializeApp();
     }
 
@@ -276,6 +279,33 @@ class SQLPracticeApp {
             });
         }
 
+        const openSchemaDiagramBtn = document.getElementById('openSchemaDiagramBtn');
+        if (openSchemaDiagramBtn) {
+            openSchemaDiagramBtn.addEventListener('click', () => {
+                this.openSchemaDiagramModal();
+            });
+        }
+
+        const closeSchemaDiagramBtn = document.getElementById('closeSchemaDiagramBtn');
+        if (closeSchemaDiagramBtn) {
+            closeSchemaDiagramBtn.addEventListener('click', () => {
+                this.closeSchemaDiagramModal();
+            });
+        }
+
+        const schemaDiagramBackdrop = document.getElementById('schemaDiagramBackdrop');
+        if (schemaDiagramBackdrop) {
+            schemaDiagramBackdrop.addEventListener('click', () => {
+                this.closeSchemaDiagramModal();
+            });
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && this.isSchemaModalOpen) {
+                this.closeSchemaDiagramModal();
+            }
+        });
+
         // Section toggle functionality - Accordion behavior (only one open at a time)
         document.querySelectorAll('.section-toggle').forEach(toggle => {
             toggle.addEventListener('click', function() {
@@ -374,9 +404,11 @@ class SQLPracticeApp {
 
     updateSchemaDisplay(schema) {
         const schemaContainer = document.querySelector('.schema-container');
+        this.currentSchema = Array.isArray(schema) ? schema : [];
         
         if (!schema || schema.length === 0) {
             schemaContainer.innerHTML = '<p>No tables found in database.</p>';
+            this.renderSchemaDiagram(this.currentSchema);
             return;
         }
         
@@ -424,6 +456,437 @@ class SQLPracticeApp {
         });
         
         schemaContainer.innerHTML = html;
+        this.renderSchemaDiagram(this.currentSchema);
+    }
+
+    openSchemaDiagramModal() {
+        const modal = document.getElementById('schemaDiagramModal');
+        if (!modal) {
+            return;
+        }
+
+        this.lastFocusedBeforeModal = document.activeElement;
+        this.isSchemaModalOpen = true;
+        modal.hidden = false;
+        document.body.classList.add('modal-open');
+
+        // Ensure diagram reflects current schema at open time.
+        this.renderSchemaDiagram(this.currentSchema);
+
+        const closeBtn = document.getElementById('closeSchemaDiagramBtn');
+        if (closeBtn) {
+            closeBtn.focus();
+        }
+    }
+
+    closeSchemaDiagramModal() {
+        const modal = document.getElementById('schemaDiagramModal');
+        if (!modal) {
+            return;
+        }
+
+        modal.hidden = true;
+        this.isSchemaModalOpen = false;
+        document.body.classList.remove('modal-open');
+
+        if (this.lastFocusedBeforeModal && typeof this.lastFocusedBeforeModal.focus === 'function') {
+            this.lastFocusedBeforeModal.focus();
+        }
+    }
+
+    renderSchemaDiagram(schema) {
+        const canvas = document.getElementById('schemaDiagramCanvas');
+        if (!canvas) {
+            return;
+        }
+
+        if (!schema || schema.length === 0) {
+            canvas.innerHTML = '<p class="schema-diagram-empty">No schema to visualize yet.</p>';
+            return;
+        }
+
+        const layout = this.calculateSchemaLayout(schema);
+        const width = layout.width;
+        const height = layout.height;
+        const tableMap = new Map(layout.tables.map(table => [table.name, table]));
+        const edges = [];
+
+        schema.forEach(table => {
+            const source = tableMap.get(table.name);
+            if (!source) {
+                return;
+            }
+
+            table.columns.forEach(column => {
+                if (!column.foreignKey) {
+                    return;
+                }
+
+                const target = tableMap.get(column.foreignKey.referencedTable);
+                if (!target) {
+                    return;
+                }
+
+                const sourceColumnOffset = this.getColumnAnchorOffset(source, column.name);
+                const targetColumnOffset = this.getColumnAnchorOffset(target, column.foreignKey.referencedColumn);
+                const startY = source.y + source.headerHeight + sourceColumnOffset;
+                const endY = target.y + target.headerHeight + targetColumnOffset;
+
+                const route = this.selectBestEdgeRoute(source, target, startY, endY, layout);
+                if (!route) {
+                    return;
+                }
+
+                edges.push({
+                    startX: route.startX,
+                    startY,
+                    endX: route.endX,
+                    endY,
+                    pathData: route.pathData,
+                    startSide: route.startSide,
+                    endSide: route.endSide
+                });
+            });
+        });
+
+        const edgeSvg = edges.map(edge => {
+            const startDirection = edge.startSide === 'right' ? 1 : -1;
+            const endDirection = edge.endSide === 'right' ? 1 : -1;
+            const manyLabelX = edge.startX + (startDirection * 14);
+            const manyLabelY = edge.startY - 3;
+            const oneLabelX = edge.endX + (endDirection === 1 ? 4 : -12);
+            const oneLabelY = edge.endY - 6;
+            const crowFootJoinX = edge.startX + (startDirection * 10);
+            const oneTickStartX = edge.endX + (endDirection * 4);
+            const oneTickEndX = edge.endX + (endDirection * 10);
+            return `
+                <g>
+                    <path class="schema-diagram-edge" d="${edge.pathData}" fill="none"></path>
+                    <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY - 7} L ${crowFootJoinX} ${edge.startY}"></path>
+                    <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY + 7} L ${crowFootJoinX} ${edge.startY}"></path>
+                    <path class="schema-diagram-one-tick" d="M ${oneTickStartX} ${edge.endY - 6} L ${oneTickEndX} ${edge.endY + 6}"></path>
+                    <text class="schema-diagram-cardinality many" x="${manyLabelX}" y="${manyLabelY}">&#8734;</text>
+                    <text class="schema-diagram-cardinality one" x="${oneLabelX}" y="${oneLabelY}">1</text>
+                </g>
+            `;
+        }).join('');
+
+        const tableSvg = layout.tables.map(table => {
+            const rows = table.columns.map((column, index) => {
+                const y = table.y + table.headerHeight + 18 + (index * table.rowHeight);
+                const isForeignKey = !!column.foreignKey;
+                const isPrimaryKey = !!column.primaryKey;
+
+                const textX = table.x + 10;
+                const baseText = `<text class="schema-diagram-column-name" x="${textX}" y="${y}">${this.escapeHtml(column.name)}</text>`;
+
+                const badges = [];
+                if (isPrimaryKey) {
+                    badges.push({ label: 'PK', type: 'pk' });
+                }
+                if (isForeignKey) {
+                    badges.push({ label: 'FK', type: 'fk' });
+                }
+
+                if (badges.length === 0) {
+                    return baseText;
+                }
+
+                const badgeY = y - 11;
+                const badgeHeight = 14;
+                const badgePadding = 10;
+                const badgeGap = 5;
+                const badgeWidths = badges.map(badge => (badge.label.length * 6) + 10);
+                const totalBadgesWidth = badgeWidths.reduce((sum, width) => sum + width, 0) + (badgeGap * (badges.length - 1));
+                let badgeX = (table.x + table.width) - badgePadding - totalBadgesWidth;
+
+                const badgeSvg = badges.map((badge, badgeIndex) => {
+                    const badgeWidth = badgeWidths[badgeIndex];
+                    const currentX = badgeX;
+                    badgeX += badgeWidth + badgeGap;
+
+                    return `
+                        <rect class="schema-diagram-key-badge ${badge.type}" x="${currentX}" y="${badgeY}" width="${badgeWidth}" height="${badgeHeight}" rx="3" ry="3"></rect>
+                        <text class="schema-diagram-key-badge-text" x="${currentX + (badgeWidth / 2)}" y="${y - 1}">${badge.label}</text>
+                    `;
+                }).join('');
+
+                return `${baseText}${badgeSvg}`;
+            }).join('');
+
+            return `
+                <g>
+                    <rect class="schema-diagram-table" x="${table.x}" y="${table.y}" width="${table.width}" height="${table.height}"></rect>
+                    <rect class="schema-diagram-table-header" x="${table.x}" y="${table.y}" width="${table.width}" height="${table.headerHeight}" rx="8" ry="8"></rect>
+                    <text class="schema-diagram-table-title" x="${table.x + 10}" y="${table.y + 19}">${this.escapeHtml(table.name)}</text>
+                    ${rows}
+                </g>
+            `;
+        }).join('');
+
+        canvas.innerHTML = `
+            <svg class="schema-diagram-svg" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Entity relationship diagram for database schema">
+                ${tableSvg}
+                ${edgeSvg}
+            </svg>
+        `;
+    }
+
+    calculateSchemaLayout(schema) {
+        const tableWidth = 260;
+        const headerHeight = 30;
+        const rowHeight = 18;
+        const minTableHeight = 84;
+        const horizontalGap = 80;
+        const verticalGap = 52;
+        const columnCount = Math.max(1, Math.ceil(Math.sqrt(schema.length)));
+
+        const tables = schema.map((table, index) => {
+            const row = Math.floor(index / columnCount);
+            const col = index % columnCount;
+            const x = 30 + col * (tableWidth + horizontalGap);
+            const y = 30 + row * (minTableHeight + (rowHeight * 6) + verticalGap);
+            const calculatedHeight = Math.max(minTableHeight, headerHeight + 14 + (table.columns.length * rowHeight) + 8);
+            const columnYByName = {};
+
+            table.columns.forEach((column, colIndex) => {
+                columnYByName[this.normalizeIdentifier(column.name)] = 14 + (colIndex * rowHeight);
+            });
+
+            return {
+                name: table.name,
+                columns: table.columns,
+                x,
+                y,
+                width: tableWidth,
+                height: calculatedHeight,
+                headerHeight,
+                rowHeight,
+                columnYByName
+            };
+        });
+
+        const maxX = tables.reduce((max, table) => Math.max(max, table.x + table.width), 760);
+        const maxY = tables.reduce((max, table) => Math.max(max, table.y + table.height), 320);
+
+        return {
+            tables,
+            width: maxX + 40,
+            height: maxY + 40
+        };
+    }
+
+    normalizeIdentifier(name) {
+        return String(name || '')
+            .replace(/["`\[\]]/g, '')
+            .trim()
+            .toLowerCase();
+    }
+
+    getColumnAnchorOffset(tableLayout, columnName) {
+        const directMatch = tableLayout.columnYByName[this.normalizeIdentifier(columnName)];
+        if (typeof directMatch === 'number') {
+            return directMatch;
+        }
+
+        const normalizedTarget = this.normalizeIdentifier(columnName);
+        const fallbackIndex = tableLayout.columns.findIndex(column => this.normalizeIdentifier(column.name) === normalizedTarget);
+        if (fallbackIndex >= 0) {
+            return 14 + (fallbackIndex * tableLayout.rowHeight);
+        }
+
+        return Math.floor(tableLayout.height / 2);
+    }
+
+    selectBestEdgeRoute(source, target, startY, endY, layout) {
+        const modes = ['opposite', 'same-right', 'same-left'];
+        const obstacleRects = layout.tables
+            .filter(table => table.name !== source.name && table.name !== target.name)
+            .map(table => ({
+                left: table.x,
+                right: table.x + table.width,
+                top: table.y,
+                bottom: table.y + table.height
+            }));
+
+        const routeCandidates = modes
+            .map(mode => this.buildRouteCandidate(mode, source, target, startY, endY, obstacleRects, layout.width))
+            .filter(candidate => !!candidate);
+
+        if (routeCandidates.length === 0) {
+            return null;
+        }
+
+        routeCandidates.sort((a, b) => {
+            if (a.collisionCount !== b.collisionCount) {
+                return a.collisionCount - b.collisionCount;
+            }
+
+            if (a.length !== b.length) {
+                return a.length - b.length;
+            }
+
+            return a.modePriority - b.modePriority;
+        });
+
+        return routeCandidates[0];
+    }
+
+    buildRouteCandidate(mode, source, target, startY, endY, obstacleRects, layoutWidth) {
+        const sourceCenterX = source.x + (source.width / 2);
+        const targetCenterX = target.x + (target.width / 2);
+        const sourceLeft = source.x;
+        const sourceRight = source.x + source.width;
+        const targetLeft = target.x;
+        const targetRight = target.x + target.width;
+
+        let startSide;
+        let endSide;
+        let startDirection;
+        let endDirection;
+        let startX;
+        let endX;
+        let portOffset;
+        let baseRouteX;
+
+        if (mode === 'opposite') {
+            const targetIsRight = targetCenterX >= sourceCenterX;
+            startSide = targetIsRight ? 'right' : 'left';
+            endSide = targetIsRight ? 'left' : 'right';
+            startDirection = targetIsRight ? 1 : -1;
+            endDirection = targetIsRight ? -1 : 1;
+            startX = targetIsRight ? sourceRight : sourceLeft;
+            endX = targetIsRight ? targetLeft : targetRight;
+            portOffset = 18;
+            const startOutX = startX + (startDirection * portOffset);
+            const endOutX = endX + (endDirection * portOffset);
+            baseRouteX = (startOutX + endOutX) / 2;
+        } else {
+            const sameRight = mode === 'same-right';
+            startSide = sameRight ? 'right' : 'left';
+            endSide = startSide;
+            startDirection = sameRight ? 1 : -1;
+            endDirection = startDirection;
+            startX = sameRight ? sourceRight : sourceLeft;
+            endX = sameRight ? targetRight : targetLeft;
+            portOffset = 14;
+            const routeOffset = 36;
+            baseRouteX = sameRight
+                ? Math.max(sourceRight, targetRight) + routeOffset
+                : Math.min(sourceLeft, targetLeft) - routeOffset;
+        }
+
+        const startOutX = startX + (startDirection * portOffset);
+        const endOutX = endX + (endDirection * portOffset);
+
+        const rawCandidates = [
+            baseRouteX,
+            ...obstacleRects.flatMap(rect => [rect.left - 24, rect.right + 24])
+        ];
+        const minRouteX = 8;
+        const maxRouteX = layoutWidth - 8;
+        const candidateXs = [...new Set(rawCandidates.map(x => this.clampValue(x, minRouteX, maxRouteX)))];
+
+        const pathOptions = candidateXs.map(routeX => {
+            const points = [
+                { x: startX, y: startY },
+                { x: startOutX, y: startY },
+                { x: routeX, y: startY },
+                { x: routeX, y: endY },
+                { x: endOutX, y: endY },
+                { x: endX, y: endY }
+            ];
+
+            const pathData = points
+                .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`)
+                .join(' ');
+
+            return {
+                points,
+                pathData,
+                collisionCount: this.countPathCollisions(points, obstacleRects),
+                length: this.getPathLength(points),
+                routeX
+            };
+        });
+
+        if (pathOptions.length === 0) {
+            return null;
+        }
+
+        pathOptions.sort((a, b) => {
+            if (a.collisionCount !== b.collisionCount) {
+                return a.collisionCount - b.collisionCount;
+            }
+
+            return a.length - b.length;
+        });
+
+        const bestPath = pathOptions[0];
+        const modePriority = mode === 'opposite' ? 0 : 1;
+
+        return {
+            startX,
+            endX,
+            startSide,
+            endSide,
+            pathData: bestPath.pathData,
+            collisionCount: bestPath.collisionCount,
+            length: bestPath.length,
+            modePriority
+        };
+    }
+
+    countPathCollisions(points, obstacleRects) {
+        let collisions = 0;
+
+        for (let i = 0; i < points.length - 1; i++) {
+            const p1 = points[i];
+            const p2 = points[i + 1];
+
+            obstacleRects.forEach(rect => {
+                if (this.segmentIntersectsRect(p1, p2, rect, 6)) {
+                    collisions += 1;
+                }
+            });
+        }
+
+        return collisions;
+    }
+
+    segmentIntersectsRect(p1, p2, rect, padding = 0) {
+        const left = rect.left - padding;
+        const right = rect.right + padding;
+        const top = rect.top - padding;
+        const bottom = rect.bottom + padding;
+
+        if (p1.x === p2.x) {
+            const x = p1.x;
+            const yMin = Math.min(p1.y, p2.y);
+            const yMax = Math.max(p1.y, p2.y);
+            return x >= left && x <= right && yMax >= top && yMin <= bottom;
+        }
+
+        if (p1.y === p2.y) {
+            const y = p1.y;
+            const xMin = Math.min(p1.x, p2.x);
+            const xMax = Math.max(p1.x, p2.x);
+            return y >= top && y <= bottom && xMax >= left && xMin <= right;
+        }
+
+        return false;
+    }
+
+    getPathLength(points) {
+        let total = 0;
+        for (let i = 0; i < points.length - 1; i++) {
+            total += Math.abs(points[i + 1].x - points[i].x) + Math.abs(points[i + 1].y - points[i].y);
+        }
+        return total;
+    }
+
+    clampValue(value, min, max) {
+        return Math.max(min, Math.min(max, value));
     }
 
     displayResults(results) {

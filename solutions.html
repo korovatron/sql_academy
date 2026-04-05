@@ -350,7 +350,8 @@ VALUES (1011, 11, 211, '2024-05-15', 'Medium', 'In Progress');</code></pre>
     TeamID INTEGER PRIMARY KEY,
     TeamName TEXT NOT NULL,
     LeaderID INTEGER,
-    City TEXT
+    City TEXT,
+    FOREIGN KEY (LeaderID) REFERENCES Heroes(HeroID)
 );</code></pre>
   <hr>
   <h3>Exercise 32: Populate Teams Table</h3>
