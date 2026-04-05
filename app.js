@@ -1033,7 +1033,9 @@ class SQLPracticeApp {
         // Display exercise information
         document.getElementById('exerciseTitle').textContent = title;
         document.getElementById('exerciseDescription').textContent = description;
-        document.getElementById('exerciseDisplay').style.display = 'block';
+        const exerciseDisplay = document.getElementById('exerciseDisplay');
+        exerciseDisplay.style.display = 'block';
+        exerciseDisplay.classList.add('active');
         
         // Load stored query if available, otherwise clear the editor
         const storedQuery = this.progressTracker.getQuery(parseInt(exerciseNumber));
@@ -1236,7 +1238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const helpText = document.createElement('div');
     helpText.innerHTML = `
         <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
-            💡 <strong>Tip:</strong> Press Ctrl+Enter to execute your query quickly!
+            <strong>Tip:</strong> Press Ctrl+Enter to execute your query quickly!
         </p>
     `;
     document.querySelector('.sql-editor').appendChild(helpText);
@@ -1440,7 +1442,7 @@ class ExerciseProgressTracker {
             // Add instructional text below the header
             const instructionText = document.createElement('p');
             instructionText.className = 'progress-instruction';
-            instructionText.innerHTML = '💡 <strong>Tip:</strong> Click the ⭕ circles to mark exercises as complete ✅';
+            instructionText.innerHTML = '<strong>Tip:</strong> Click the ⭕ circles to mark exercises as complete ✅';
             exercisesHeader.parentNode.insertBefore(instructionText, exercisesHeader.nextSibling);
         }
     }
