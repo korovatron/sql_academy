@@ -397,7 +397,10 @@ UPDATE Teams SET Founded = '1964-07-01' WHERE TeamName = 'Teen Titans';</code></
     HeroID INTEGER,
     TeamID INTEGER,
     JoinDate TEXT,
-    Role TEXT
+    Role TEXT,
+    PRIMARY KEY (HeroID, TeamID),
+    FOREIGN KEY (HeroID) REFERENCES Heroes(HeroID),
+    FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
 );</code></pre>
   <hr>
   <h3>Exercise 40: Add Heroes to Avengers</h3>

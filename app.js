@@ -538,18 +538,26 @@ class SQLPracticeApp {
                 }
 
                 edges.push({
+                    colorIndex: edges.length,
                     startX: route.startX,
                     startY,
                     endX: route.endX,
                     endY,
-                    pathData: route.pathData,
+                    points: route.points,
+                    routeX: route.routeX,
+                    pathData: this.createPathDataFromPoints(route.points),
                     startSide: route.startSide,
                     endSide: route.endSide
                 });
             });
         });
 
+        this.spreadEdgeLanes(edges);
+
+        const connectorPalette = ['#0072B2', '#E69F00', '#009E73', '#CC79A7', '#D55E00', '#56B4E9'];
+
         const edgeSvg = edges.map(edge => {
+            const edgeColor = connectorPalette[edge.colorIndex % connectorPalette.length];
             const startDirection = edge.startSide === 'right' ? 1 : -1;
             const endDirection = edge.endSide === 'right' ? 1 : -1;
             const manyLabelX = edge.startX + (startDirection * 14);
@@ -561,12 +569,12 @@ class SQLPracticeApp {
             const oneTickEndX = edge.endX + (endDirection * 10);
             return `
                 <g>
-                    <path class="schema-diagram-edge" d="${edge.pathData}" fill="none"></path>
-                    <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY - 7} L ${crowFootJoinX} ${edge.startY}"></path>
-                    <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY + 7} L ${crowFootJoinX} ${edge.startY}"></path>
-                    <path class="schema-diagram-one-tick" d="M ${oneTickStartX} ${edge.endY - 6} L ${oneTickEndX} ${edge.endY + 6}"></path>
-                    <text class="schema-diagram-cardinality many" x="${manyLabelX}" y="${manyLabelY}">&#8734;</text>
-                    <text class="schema-diagram-cardinality one" x="${oneLabelX}" y="${oneLabelY}">1</text>
+                    <path class="schema-diagram-edge" d="${edge.pathData}" fill="none" style="stroke: ${edgeColor};"></path>
+                    <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY - 7} L ${crowFootJoinX} ${edge.startY}" style="stroke: ${edgeColor};"></path>
+                    <path class="schema-diagram-crow-foot" d="M ${edge.startX} ${edge.startY + 7} L ${crowFootJoinX} ${edge.startY}" style="stroke: ${edgeColor};"></path>
+                    <path class="schema-diagram-one-tick" d="M ${oneTickStartX} ${edge.endY - 6} L ${oneTickEndX} ${edge.endY + 6}" style="stroke: ${edgeColor};"></path>
+                    <text class="schema-diagram-cardinality many" x="${manyLabelX}" y="${manyLabelY}" style="fill: ${edgeColor};">&#8734;</text>
+                    <text class="schema-diagram-cardinality one" x="${oneLabelX}" y="${oneLabelY}" style="fill: ${edgeColor};">1</text>
                 </g>
             `;
         }).join('');
@@ -830,11 +838,61 @@ class SQLPracticeApp {
             endX,
             startSide,
             endSide,
-            pathData: bestPath.pathData,
+            points: bestPath.points,
+            routeX: bestPath.routeX,
             collisionCount: bestPath.collisionCount,
             length: bestPath.length,
             modePriority
         };
+    }
+
+    spreadEdgeLanes(edges) {
+        const laneGap = 8;
+        const groups = new Map();
+
+        edges.forEach(edge => {
+            if (!Array.isArray(edge.points) || edge.points.length < 6 || typeof edge.routeX !== 'number') {
+                return;
+            }
+
+            const bucketX = Math.round(edge.routeX / laneGap) * laneGap;
+            const key = `${edge.startSide}-${edge.endSide}-${bucketX}`;
+            const group = groups.get(key) || [];
+            group.push(edge);
+            groups.set(key, group);
+        });
+
+        groups.forEach(group => {
+            if (group.length < 2) {
+                group.forEach(edge => {
+                    edge.pathData = this.createPathDataFromPoints(edge.points);
+                });
+                return;
+            }
+
+            group.sort((a, b) => {
+                const aMidY = (a.startY + a.endY) / 2;
+                const bMidY = (b.startY + b.endY) / 2;
+                return aMidY - bMidY;
+            });
+
+            const center = (group.length - 1) / 2;
+
+            group.forEach((edge, index) => {
+                const shift = (index - center) * laneGap;
+
+                // Route points are always the third and fourth points in our orthogonal path template.
+                edge.points[2].x += shift;
+                edge.points[3].x += shift;
+                edge.pathData = this.createPathDataFromPoints(edge.points);
+            });
+        });
+    }
+
+    createPathDataFromPoints(points) {
+        return points
+            .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`)
+            .join(' ');
     }
 
     countPathCollisions(points, obstacleRects) {
