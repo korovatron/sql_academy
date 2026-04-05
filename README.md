@@ -1,224 +1,120 @@
-# 🦸‍♂️ Superhero SQL Training Academy 🦸‍♀️
+# Superhero SQL Training Academy
 
-A fully client-side SQL practice environment that runs entirely in the browser using SQL.js (SQLite compiled to WebAssembly). Learn SQL with superheroes, villains, and epic missions! Perfect for static hosting on GitHub Pages!
+Superhero SQL Training Academy is a fully client-side SQL practice environment built for teaching and learning SQL in the browser. It uses SQL.js to run SQLite via WebAssembly, so learners can execute queries, modify schema, and explore table relationships without installing any database server.
 
-## Features
-
-- 🌐 **Fully Client-Side**: No server required - runs entirely in the browser
-- 🦸‍♂️ **Superhero Database**: Practice with heroes, villains, powers, and missions
-- ✅ **Full CRUD Support**: Create, Read, Update, Delete operations all work
-- 🏗️ **DDL Operations**: Create, alter, and drop tables dynamically
-- 🔄 **Dynamic Schema**: Schema updates in real-time when tables are modified
-- 🎯 **Real-time Execution**: Execute SQL queries and see results instantly
-- 📱 **Responsive Design**: Works on desktop and mobile devices
-- 🔄 **Database Reset**: Reset to original sample data anytime
-- 💡 **Geeky Examples**: Built-in superhero-themed queries to get started quicklyEnvironment
-
-A fully client-side SQL practice environment that runs entirely in the browser using SQL.js (SQLite compiled to WebAssembly). Perfect for static hosting on GitHub Pages!
+The project is designed for simple static hosting, including GitHub Pages.
 
 ## Features
 
-- 🌐 **Fully Client-Side**: No server required - runs entirely in the browser
-- 📊 **Sample Database**: Includes sample tables (Customers, Orders, Products, OrderDetails) similar to W3Schools
-- ✅ **Full CRUD Support**: Create, Read, Update, Delete operations all work
-- �️ **DDL Operations**: Create, alter, and drop tables dynamically
-- 🔄 **Dynamic Schema**: Schema updates in real-time when tables are modified
-- �🎯 **Real-time Execution**: Execute SQL queries and see results instantly
-- 📱 **Responsive Design**: Works on desktop and mobile devices
-- 🔄 **Database Reset**: Reset to original sample data anytime
-- 💡 **Example Queries**: Built-in examples to get started quickly
+- Fully client-side: no backend or database server required.
+- Interactive SQL editor with in-browser query execution.
+- Superhero-themed sample database with heroes, villains, powers, missions, teams, and junction-table exercises.
+- Support for `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `CREATE TABLE`, `ALTER TABLE`, and `DROP TABLE`.
+- Dynamic schema table view that updates when tables change.
+- Live schema diagram modal with PK/FK badges, cardinality markers, and obstacle-aware connector routing.
+- Responsive layout for desktop, tablet, and mobile use.
+- Reset option to restore the original sample database.
+- Companion solutions guide in [solutions.html](solutions.html).
 
-## Getting Started
+## Project Files
 
-### Option 1: Open Locally
-1. Download or clone this repository
-2. Open `index.html` in any modern web browser
-3. Start practicing SQL!
+- [index.html](index.html): main application UI.
+- [app.js](app.js): application logic, editor handling, schema rendering, and diagram generation.
+- [database.js](database.js): SQL.js setup, sample data, and schema introspection.
+- [styles.css](styles.css): application styling.
+- [solutions.html](solutions.html): worked solutions for the exercise set.
+- [sw.js](sw.js): service worker for caching and offline support.
 
-### Option 2: Deploy to GitHub Pages
-1. Fork this repository
-2. Go to Settings → Pages
-3. Set source to "Deploy from a branch"
-4. Select `main` branch and `/ (root)` folder
-5. Your SQL practice environment will be available at `https://yourusername.github.io/repository-name`
 
-## 🗃️ Database Schema Overview
+## Database Overview
 
-### Visual Entity Relationship Diagram
+The core sample database includes these main tables:
 
-```
-    HEROES (1) ────────────────────── (N) MISSIONS (N) ────────────────────── (1) VILLAINS
-    ┌─────────────┐                        ┌─────────────┐                        ┌─────────────┐
-    │ • HeroID    │◄──────────────────────►│ • MissionID │◄──────────────────────►│ • VillainID │
-    │ • HeroName  │                        │ • HeroID    │                        │ • VillainName│
-    │ • Universe  │                        │ • VillainID │                        │ • ThreatLevel│
-    │ • PowerLevel│                        │ • Status    │                        │ • LastSeen  │
-    └─────────────┘                        └─────────────┘                        └─────────────┘
-           │                                                                              
-           │ M:N                                                                          
-           ▼                                                                              
-    ┌─────────────┐                        ┌─────────────┐                              
-    │ HEROPOWERS  │◄──────────────────────►│   POWERS    │                              
-    │ • HeroID    │                        │ • PowerID   │                              
-    │ • PowerID   │                        │ • PowerName │                              
-    │ • Proficiency│                       │ • PowerType │                              
-    └─────────────┘                        │ • DangerLevel│                              
-                                           └─────────────┘                              
-```
+- `Heroes`: superhero identities and attributes.
+- `Powers`: superhero abilities.
+- `Villains`: antagonist data.
+- `Missions`: links heroes and villains through encounters.
+- `HeroPowers`: junction table linking heroes and powers.
 
-### 📋 Table Structures
+Later exercises also introduce:
 
-**🦸‍♂️ HEROES** - Main character data
-- `HeroID` (Primary Key), `HeroName`, `RealName`, `City`, `Universe`, `PowerLevel`, `FirstAppearance`
-
-**⚡ POWERS** - Superhero abilities
-- `PowerID` (Primary Key), `PowerName`, `PowerType`, `EnergyRequired`, `DangerLevel`, `CreationDate`
-
-**🦹‍♂️ VILLAINS** - Antagonist data  
-- `VillainID` (Primary Key), `VillainName`, `RealName`, `City`, `ThreatLevel`, `LastSeen`
-
-**🎯 MISSIONS** - Hero vs Villain encounters
-- `MissionID` (Primary Key), `HeroID` (FK), `VillainID` (FK), `MissionDate`, `Difficulty`, `Status`
-
-**🔗 HEROPOWERS** - Many-to-Many junction table
-- `HeroID` (FK), `PowerID` (FK), `ProficiencyLevel`, `YearsTraining`
-
-> 📖 **For detailed schema with visual diagrams, see [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md)**
+- `Teams`: superhero teams.
+- `TeamMembers`: junction table linking heroes and teams.
 
 ## Example Queries
 
-### Basic SELECT
+### Basic Selects
+
 ```sql
 SELECT * FROM Heroes;
-SELECT * FROM Heroes WHERE Universe = 'Marvel';
-SELECT * FROM Powers WHERE DangerLevel > 8;
+
+SELECT HeroName, PowerLevel
+FROM Heroes
+WHERE PowerLevel > 90;
 ```
 
-### Date-Based Queries
+### Joining Tables
+
 ```sql
--- Heroes from the Golden Age (before 1950)
-SELECT * FROM Heroes WHERE FirstAppearance < '1950-01-01';
-
--- Recent missions (last 30 days)
-SELECT * FROM Missions WHERE MissionDate > '2024-03-15';
-
--- Recently active villains
-SELECT VillainName, LastSeen FROM Villains WHERE LastSeen > '2024-04-01';
-
--- Calculate years active for heroes
-SELECT HeroName, (2024 - CAST(SUBSTR(FirstAppearance, 1, 4) AS INTEGER)) AS YearsActive 
-FROM Heroes 
-ORDER BY YearsActive DESC;
-```
-
-### Complex Multi-Table Queries
-```sql
--- Heroes and their powers
-SELECT Heroes.HeroName, Powers.PowerName, HeroPowers.ProficiencyLevel
+SELECT Heroes.HeroName, Powers.PowerName
 FROM Heroes, HeroPowers, Powers
-WHERE Heroes.HeroID = HeroPowers.HeroID 
+WHERE Heroes.HeroID = HeroPowers.HeroID
 AND HeroPowers.PowerID = Powers.PowerID;
+```
 
--- Successful missions with hero and villain details
-SELECT Heroes.HeroName, Villains.VillainName, Missions.MissionDate, Missions.Difficulty
-FROM Heroes, Missions, Villains
-WHERE Heroes.HeroID = Missions.HeroID 
-AND Missions.VillainID = Villains.VillainID 
+### Filtering Mission Data
+
+```sql
+SELECT Heroes.HeroName, Villains.VillainName, Missions.Difficulty
+FROM Heroes, Villains, Missions
+WHERE Heroes.HeroID = Missions.HeroID
+AND Villains.VillainID = Missions.VillainID
 AND Missions.Status = 'Completed';
 ```
 
-### Aggregations & Analytics
-```sql
--- Heroes ranked by mission count
-SELECT Heroes.HeroName, COUNT(Missions.MissionID)
-FROM Heroes, Missions
-WHERE Heroes.HeroID = Missions.HeroID 
-GROUP BY Heroes.HeroID, Heroes.HeroName
-ORDER BY COUNT(Missions.MissionID) DESC;
+### Creating a New Table
 
--- Average power level by universe
-SELECT Universe, AVG(PowerLevel)
-FROM Heroes 
-GROUP BY Universe;
-```
-
-### INSERT
-```sql
-INSERT INTO Heroes (HeroName, RealName, City, Universe, PowerLevel) 
-VALUES ('Spider-Woman', 'Jessica Drew', 'San Francisco', 'Marvel', 84);
-```
-
-### UPDATE
-```sql
-UPDATE Heroes SET PowerLevel = 100 WHERE HeroName = 'Spider-Man';
-```
-
-### DELETE
-```sql
-DELETE FROM Heroes WHERE HeroName = 'Spider-Woman';
-```
-
-### CREATE TABLE
 ```sql
 CREATE TABLE Teams (
     TeamID INTEGER PRIMARY KEY,
     TeamName TEXT NOT NULL,
     LeaderID INTEGER,
     City TEXT,
-    Universe TEXT,
     FOREIGN KEY (LeaderID) REFERENCES Heroes(HeroID)
 );
 ```
 
-### ALTER TABLE
-```sql
-ALTER TABLE Heroes ADD COLUMN FirstAppearance TEXT;
-```
+## Teaching Use
 
-### DROP TABLE
-```sql
-DROP TABLE Teams;
-```
+This project is especially suited to classroom demonstrations because it:
 
-## Technologies Used
+- runs without setup on student machines,
+- supports live schema changes during lessons,
+- visualises relationships in a modal diagram,
+- and provides a separate solutions page for review.
 
-- **SQL.js**: SQLite compiled to WebAssembly for client-side database operations
-- **HTML5/CSS3**: Modern responsive web interface
-- **Vanilla JavaScript**: No frameworks required - lightweight and fast
-- **GitHub Pages**: Static hosting solution
+## Technology Stack
 
-## Browser Compatibility
+- SQL.js
+- SQLite via WebAssembly
+- HTML
+- CSS
+- Vanilla JavaScript
+- GitHub Pages
 
-This application works in all modern browsers that support WebAssembly:
-- Chrome 57+
-- Firefox 52+
-- Safari 11+
-- Edge 16+
+## Browser Support
 
-## Why This Solution?
+The application works in modern browsers with WebAssembly support, including current versions of Chrome, Firefox, Safari, and Edge.
 
-- ✅ **No Server Required**: Perfect for static hosting
-- ✅ **No Database Setup**: Database runs entirely in browser memory
-- ✅ **Full SQL Support**: All standard SQL operations work
-- ✅ **Fast Performance**: SQLite is incredibly fast, even in WebAssembly
-- ✅ **Private**: All data stays in the user's browser
-- ✅ **Educational**: Perfect for learning SQL without complex setup
+## Customisation
 
-## Customization
+To adapt the project:
 
-### Adding Your Own Data
-Modify the `sampleData` object in `database.js` to include your own sample data.
-
-### Adding More Tables
-Add new table definitions in the `createTables()` method in `database.js`.
-
-### Styling
-Customize the appearance by modifying `styles.css`.
-
-## Contributing
-
-Feel free to submit issues and pull requests to improve this SQL practice environment!
+- edit sample data in [database.js](database.js),
+- add or change exercises in [index.html](index.html),
+- update solutions in [solutions.html](solutions.html),
+- and tweak styling in [styles.css](styles.css).
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is available under the MIT License.
