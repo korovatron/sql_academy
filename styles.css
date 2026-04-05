@@ -188,12 +188,12 @@ header {
 }
 
 .theme-toggle-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.28);
     color: white;
-    min-height: 40px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    min-height: 38px;
+    padding: 7px 11px;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -201,13 +201,13 @@ header {
     gap: 8px;
     font-size: 1em;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
 }
 
 .theme-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.38);
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px var(--shadow);
 }
 
 .theme-icon {
@@ -1188,18 +1188,18 @@ body.modal-open {
 
 .error {
     color: #e53e3e;
-    background: #fed7d7;
+    background: var(--bg-secondary);
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #f5a3a3;
+    border: 1px solid #e53e3e;
 }
 
 .success {
     color: #38a169;
-    background: #c6f6d5;
+    background: var(--bg-secondary);
     padding: 15px;
     border-radius: 8px;
-    border: 1px solid #86d5a8;
+    border: 1px solid #38a169;
 }
 
 .loading {
@@ -1318,25 +1318,31 @@ footer {
     }
     
     .editor-controls {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         gap: 8px;
-        align-items: stretch;
+        align-items: center;
     }
 
     .editor-controls-left,
     .editor-controls-right {
-        width: 100%;
+        width: auto;
     }
 
     .editor-controls-right {
-        margin-left: 0;
+        margin-left: auto;
+    }
+
+    .editor-controls .btn-label {
+        display: none;
     }
     
     .editor-controls button {
-        width: 100%;
-        padding: 15px 20px;
-        font-size: 16px;
-        min-height: 50px;
+        width: auto;
+        min-width: 44px;
+        padding: 10px 12px;
+        min-height: 44px;
+        font-size: 15px;
     }
     
     /* Improve results display */
@@ -1442,13 +1448,13 @@ footer {
     }
     
     .editor-controls button {
-        padding: 12px 15px;
+        padding: 10px 12px;
         min-height: 45px;
     }
 
     .editor-controls .btn-icon {
-        width: 13px;
-        height: 13px;
+        width: 14px;
+        height: 14px;
     }
     
     .result-table th,
