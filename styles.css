@@ -50,6 +50,8 @@
     --shadow-hover: rgba(0, 0, 0, 0.15);
     --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --gradient-secondary: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    --result-header-bg: #e7ecff;
+    --result-header-text: #243a8f;
     --input-bg: #f8f9fa;
     --input-focus-bg: white;
     --focus-accent: #4f6ef7;
@@ -71,6 +73,8 @@
     --shadow-hover: rgba(0, 0, 0, 0.4);
     --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --gradient-secondary: linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%);
+    --result-header-bg: #3f4f95;
+    --result-header-text: #f4f7ff;
     --input-bg: #3a3a3a;
     --input-focus-bg: #4a4a4a;
     --focus-accent: #aab8ff;
@@ -284,11 +288,14 @@ header {
 }
 
 .section-toggle:hover {
-    background: var(--gradient-primary);
-    color: white;
-    filter: brightness(1.1);
+    background: var(--result-header-bg);
+    color: var(--result-header-text);
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.section-toggle:hover .toggle-icon {
+    color: var(--result-header-text);
 }
 
 .toggle-icon {
@@ -1077,8 +1084,8 @@ body.modal-open {
 }
 
 .result-table th {
-    background: var(--gradient-primary);
-    color: white;
+    background: var(--result-header-bg);
+    color: var(--result-header-text);
     font-weight: 600;
     border-bottom: 2px solid var(--border-light);
 }
