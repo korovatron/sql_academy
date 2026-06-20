@@ -60,10 +60,10 @@
 
 .dark-theme {
     /* Dark theme variables */
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #3a3a3a;
-    --bg-accent: #4a4a4a;
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2d2d2d;
+    --bg-accent: #3a3a3a;
     --text-primary: #e0e0e0;
     --text-secondary: #c0c0c0;
     --text-muted: #a0a0a0;
