@@ -1388,7 +1388,7 @@ class ExerciseProgressTracker {
     }
 
     sendCompletionEvent(exerciseId) {
-        const eventLabel = `SQL_Academy_Q${exerciseId}_Completed`;
+        const eventLabel = 'SQL_Academy_Question_Completed';
 
         if (typeof window !== 'undefined' && window.goatcounter && typeof window.goatcounter.count === 'function') {
             window.goatcounter.count({
