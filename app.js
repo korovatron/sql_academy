@@ -386,6 +386,7 @@ class SQLPracticeApp {
             if (result.success) {
                 this.displayResults(result.results);
                 this.displayMessage(result.message, 'success');
+                this.sendSuccessfulExecutionEvent();
                 
                 // Save the successful query for this exercise
                 if (this.currentExercise) {
@@ -1073,6 +1074,18 @@ class SQLPracticeApp {
         }, 10);
     }
 
+    sendSuccessfulExecutionEvent() {
+        const eventLabel = 'SQL_Academy_Successful_Execution';
+
+        if (typeof window !== 'undefined' && window.goatcounter && typeof window.goatcounter.count === 'function') {
+            window.goatcounter.count({
+                path: eventLabel,
+                title: eventLabel,
+                event: true
+            });
+        }
+    }
+
     clearResults() {
         const resultsDiv = document.getElementById('results');
         resultsDiv.innerHTML = '';
@@ -1356,6 +1369,7 @@ class ExerciseProgressTracker {
         this.progress[exerciseId].completedAt = new Date().toISOString();
         this.saveProgress();
         this.updateProgressDisplay();
+        this.sendCompletionEvent(exerciseId);
     }
 
     markIncomplete(exerciseId) {
@@ -1371,6 +1385,18 @@ class ExerciseProgressTracker {
 
     isCompleted(exerciseId) {
         return this.progress[exerciseId]?.completed || false;
+    }
+
+    sendCompletionEvent(exerciseId) {
+        const eventLabel = `SQL_Academy_Q${exerciseId}_Completed`;
+
+        if (typeof window !== 'undefined' && window.goatcounter && typeof window.goatcounter.count === 'function') {
+            window.goatcounter.count({
+                path: eventLabel,
+                title: eventLabel,
+                event: true
+            });
+        }
     }
 
     // Query storage methods
